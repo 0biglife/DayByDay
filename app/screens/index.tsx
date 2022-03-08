@@ -14,8 +14,6 @@ import editProfileView from './profile/editProfileView';
 import UserProfile from './profile/UesrProfile';
 import MessageView from './profile/MessageView';
 
-import PlayerBar from './PlayerBar';
-
 export {
   HomeView,
   ArticleView,
@@ -30,6 +28,5 @@ export {
   Profile,
   editProfileView,
   UserProfile,
-  PlayerBar,
   MessageView,
 };
