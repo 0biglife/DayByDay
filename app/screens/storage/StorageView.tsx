@@ -37,7 +37,7 @@ const ButtonTitle = styled.Text`
   font-weight: 600;
 `;
 
-const boardView = () => {
+const StorageView = () => {
   return (
     <Container>
       <ButtonWrapper>
@@ -70,4 +70,4 @@ const boardView = () => {
   );
 };
 
-export default boardView;
+export default StorageView;

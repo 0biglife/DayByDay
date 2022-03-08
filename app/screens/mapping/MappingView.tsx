@@ -16,12 +16,12 @@ const Title = styled.Text`
   font-weight: 400;
 `;
 
-const mymusicView = () => {
+const MappingView = () => {
   return (
     <Container>
-      <Title>MyMusician View</Title>
+      <Title>MappingView View</Title>
     </Container>
   );
 };
 
-export default mymusicView;
+export default MappingView;

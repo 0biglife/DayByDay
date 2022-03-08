@@ -7,8 +7,8 @@ import ArticleView from './home/ArticleView';
 import loginView from './Auth/login';
 import signupView from './Auth/signup';
 import searchView from './search/search';
-import mymusicView from './mymusic/mymusic';
-import boardView from './board/boardView';
+import MappingView from './mapping/MappingView';
+import StorageView from './storage/StorageView';
 import Profile from './profile/Profile';
 import editProfileView from './profile/editProfileView';
 import UserProfile from './profile/UesrProfile';
@@ -23,8 +23,8 @@ export {
   loginView,
   signupView,
   searchView,
-  mymusicView,
-  boardView,
+  MappingView,
+  StorageView,
   Profile,
   editProfileView,
   UserProfile,
