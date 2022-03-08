@@ -1,4 +1,4 @@
-package com.connectym_ts;
+package com.viewty;
 
 import android.os.Bundle;
 import org.devio.rn.splashscreen.SplashScreen;
@@ -17,6 +17,6 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected String getMainComponentName() {
-    return "ConnectyM_TS";
+    return "viewty";
   }
 }

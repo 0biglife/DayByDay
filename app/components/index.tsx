@@ -1,4 +1,4 @@
-import Input from './Input';
+import Input from './input';
 import Button from './Button';
 import PostCard from './PostCard';
 import MenuModal from './MenuModal';
