@@ -1,1 +1,1 @@
-# facebook -> instagram -> view-society = viewty 
+# facebook -> instagram -> view-society
