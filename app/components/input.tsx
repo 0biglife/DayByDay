@@ -24,6 +24,7 @@ interface Props {
   placeholder: string;
   onChangeText: (text: string) => void;
   secureTextEntry?: boolean;
+  onKeyPressed: () => void;
 }
 
 const Input: React.FC<Props> = props => {
@@ -35,6 +36,7 @@ const Input: React.FC<Props> = props => {
         secureTextEntry={props.secureTextEntry || false}
         onChangeText={props.onChangeText}
         autoCapitalize="none"
+        onKeyPress={props.onKeyPressed}
       />
     </Container>
   );

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import {Alert, Platform, View} from 'react-native';
+import {Alert, Platform} from 'react-native';
 import styled from 'styled-components/native';
-import {Button, Input} from '../../components';
+import {Input} from '../../components';
 //Social Login
 import {
   GoogleSignin,
@@ -78,7 +78,7 @@ const LoginButton = styled.TouchableOpacity`
 const ButtonText = styled.Text`
   color: white;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 const SignUpTextView = styled.TouchableOpacity`
@@ -110,6 +110,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
   const [password, setPassword] = useState<string>('');
   //redux + hook
   const {authorize} = useAuthActions();
+  const [isActive, setIsActive] = useState<boolean>(false);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -187,16 +188,6 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
     }
   };
 
-  // const signOut = async () => {
-  //   try {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //     setUser({});
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   const toggleLoginButton = () => {
     if (isLoading) {
       return;
@@ -205,24 +196,32 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
       identifier,
       password,
     });
-    // authorize({
-    //   id: 1,
-    //   username: '0biglife',
-    //   displayName: 'young big life',
-    // });
   };
 
-  //GoogleSingIn, AppleSignin
+  const isActiveReady = () => {
+    return identifier.includes('@') && password.length > 1
+      ? setIsActive(true)
+      : setIsActive(false);
+  };
+
   return (
     <SafeAreaContainer>
       <Container>
-        <Input placeholder="email" onChangeText={text => setIdentifier(text)} />
+        <Input
+          placeholder="email"
+          onChangeText={text => setIdentifier(text)}
+          onKeyPressed={() => isActiveReady()}
+        />
         <Input
           placeholder="password"
           onChangeText={text => setPassword(text)}
+          onKeyPressed={() => isActiveReady()}
         />
         <LoginButton
-          style={{backgroundColor: 'gray'}}
+          style={{
+            backgroundColor: isActive === true ? 'gray' : 'lightgray',
+          }}
+          disabled={!isActive}
           onPress={() => toggleLoginButton()}>
           <ButtonText>Login</ButtonText>
         </LoginButton>
