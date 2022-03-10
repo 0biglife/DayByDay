@@ -45,6 +45,7 @@ const RootStack = () => {
       ) : (
         <>
           <Stack.Screen name="AuthStack" component={AuthStack} />
+          <Stack.Screen name="MainTab" component={MainTab} />
           <Stack.Screen name="Message" component={MessageView} />
           <Stack.Screen name="EditProfile" component={editProfileView} />
           <Stack.Screen name="UserProfile" component={UserProfile} />
@@ -57,21 +58,3 @@ const RootStack = () => {
 };
 
 export default RootStack;
-
-/*
-
-        {isLoggedIn ? (
-            <Stack.Screen name="MainTab" component={MainTab} />}
-        ) : (
-          <>
-            <Stack.Screen name="AuthStack" component={AuthStack} />
-            <Stack.Screen
-              name="MainTab"
-              component={MainTab}
-              options={{
-                gestureEnabled: false,
-              }}
-            />
-          </>
-        )}
-*/

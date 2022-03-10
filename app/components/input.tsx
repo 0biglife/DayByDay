@@ -6,15 +6,18 @@ import styled from 'styled-components/native';
 // import {AnyAction, bindActionCreators, Dispatch} from 'redux';
 
 const Container = styled.View`
-  width: 90%;
+  min-width: 85%;
   align-self: center;
-  background-color: #e3e3e3;
-  border-radius: 6px;
+  background-color: white;
+  border-radius: 24px;
   margin-top: 10px;
+  border-width: 1.2px;
+  border-color: lightgray;
 `;
 
 const CustomInput = styled.TextInput`
   padding: 15px;
+  height: 48px;
 `;
 
 interface Props {

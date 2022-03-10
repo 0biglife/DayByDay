@@ -48,17 +48,30 @@ const Container = styled.View`
   justify-content: center;
 `;
 
-const ButtonWrapper = styled.View`
-  margin-bottom: 20px;
+const SocialButtonWrapper = styled.View`
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  margin-top: 10px;
+`;
+
+const SocialButton = styled.TouchableOpacity`
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  background-color: lightgray;
+  margin: 10px;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LoginButton = styled.TouchableOpacity`
-  width: 300px;
+  min-width: 85%;
   height: 48px;
-  border-radius: 4px;
+  border-radius: 24px;
   justify-content: center;
   align-items: center;
-  margin-top: 5px;
+  margin-top: 10px;
   margin-bottom: 6px;
 `;
 
@@ -66,6 +79,20 @@ const ButtonText = styled.Text`
   color: white;
   font-size: 16px;
   font-weight: 700;
+`;
+
+const SignUpTextView = styled.TouchableOpacity`
+  width: 300px;
+  height: 20px;
+  background-color: white;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SignUpText = styled.Text`
+  font-size: 14px;
+  color: lightslategray;
+  font-weight: 400;
 `;
 
 export interface LoginProps {
@@ -185,39 +212,31 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
     // });
   };
 
+  //GoogleSingIn, AppleSignin
   return (
     <SafeAreaContainer>
       <Container>
-        <ButtonWrapper>
-          <LoginButton
-            style={{backgroundColor: 'orange'}}
-            onPress={GoogleSignIn}>
-            <ButtonText>Sign in with Google</ButtonText>
-          </LoginButton>
-          {Platform.OS === 'ios' ? (
-            <LoginButton
-              style={{backgroundColor: 'black'}}
-              onPress={AppleSignIn}>
-              <ButtonText>Sign in with Apple</ButtonText>
-            </LoginButton>
-          ) : null}
-          <View style={{width: 300}}>
-            <Input
-              placeholder="email"
-              onChangeText={text => setIdentifier(text)}
-            />
-            <Input
-              placeholder="password"
-              onChangeText={text => setPassword(text)}
-            />
-          </View>
-          <Button title="Login" onPress={() => toggleLoginButton()} />
-          <Button
-            title="SignUp"
-            onPress={() => navigation.navigate('PermissionAuth')}
-          />
-          <Button title="Jump" onPress={() => navigation.navigate('MainTab')} />
-        </ButtonWrapper>
+        <Input placeholder="email" onChangeText={text => setIdentifier(text)} />
+        <Input
+          placeholder="password"
+          onChangeText={text => setPassword(text)}
+        />
+        <LoginButton
+          style={{backgroundColor: 'gray'}}
+          onPress={() => toggleLoginButton()}>
+          <ButtonText>Login</ButtonText>
+        </LoginButton>
+        <SignUpTextView onPress={() => navigation.navigate('PermissionAuth')}>
+          <SignUpText>Sign up here</SignUpText>
+        </SignUpTextView>
+        <SocialButtonWrapper>
+          <SocialButton onPress={() => GoogleSignIn}>
+            <ButtonText>G</ButtonText>
+          </SocialButton>
+          <SocialButton onPress={() => AppleSignIn}>
+            <ButtonText>A</ButtonText>
+          </SocialButton>
+        </SocialButtonWrapper>
       </Container>
     </SafeAreaContainer>
   );

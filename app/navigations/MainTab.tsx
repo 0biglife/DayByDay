@@ -1,10 +1,11 @@
 import React from 'react';
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 
 //screens
 import {
-  mymusicView,
-  boardView,
+  MappingView,
+  StorageView,
   searchView,
   HomeView,
   Profile,
@@ -29,11 +30,9 @@ const MainTab = () => {
           } else if (route.name === 'Search') {
             iconName = focused ? 'search' : 'ios-search-outline';
           } else if (route.name === 'Mapping') {
-            iconName = focused
-              ? 'ios-musical-notes'
-              : 'ios-musical-notes-outline';
+            iconName = focused ? 'globe' : 'globe-outline';
           } else if (route.name === 'Storage') {
-            iconName = focused ? 'clipboard' : 'clipboard-outline';
+            iconName = focused ? 'albums' : 'albums-outline';
           } else if (route.name === 'Profile') {
             iconName = focused ? 'person' : 'person-outline';
           }
