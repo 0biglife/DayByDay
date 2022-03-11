@@ -88,32 +88,9 @@ export interface SearchProps {
 const searchView: React.FC<SearchProps> = () => {
   const [value, setValue] = useState<string>('');
   const [dataList, setDataList] = useState([]);
-  //
-  // const [unsplashData, setUnsplashData] = useState('');
 
   useEffect(() => {
-    // apiClient.get('/feeds').then(response => {
-    //   const jsonData = response.data;
-    //   console.log('SEARCHVIEW : ', jsonData.users);
-    //   setDataList(jsonData);
-    // });
-
-    // axios
-    //   .get(
-    //     'https://api.unsplash.com/search/photos?client_id=niOhWgxJbQQJUSsBC0XauybHlWH-IqG2Rrhwx8NMeTc',
-    //     {
-    //       params: {
-    //         query: 'sun',
-    //         page: 1,
-    //         per_page: 3,
-    //       },
-    //     },
-    //   )
-    //   .then(response => {
-    //     console.log('UNSPLAH SERCH DATA TEST : ', response.data.results);
-    //     const jsonData = response.data;
-    //     setDataList(jsonData);
-    //   });
+    //
   }, []);
 
   const ItemView = ({item}) => {

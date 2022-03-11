@@ -12,6 +12,13 @@ const Container = styled.View`
   justify-content: center;
 `;
 
+const ProfileImage = styled.TouchableOpacity`
+  width: 120px;
+  height: 120px;
+  border-radius: 60px;
+  background-color: lightgray;
+`;
+
 export interface SignUpProps {
   navigation: NativeStackNavigationProp<RootStackparamList, 'AuthStack'>;
 }
@@ -22,6 +29,7 @@ const signupView: React.FC<SignUpProps> = ({navigation}) => {
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [passwordConfirmed, setPasswordConfirmed] = useState<string>('');
 
   const onPress = () => {
     if (isLoading) {

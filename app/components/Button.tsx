@@ -8,14 +8,16 @@ const Container = styled.TouchableOpacity`
   justify-content: center;
   align-self: center;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: 24px;
   margin: 10px;
-  width: 100px;
-  background-color: ${props => props.theme.color.button};
+  width: 85%;
+  height: 50px;
 `;
 
 const ButtonText = styled.Text`
   color: ${props => props.theme.color.buttonText};
+  font-size: 16px;
+  font-weight: 600;
 `;
 
 interface Props {

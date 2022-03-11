@@ -20,6 +20,7 @@ import useLogin from '../../hooks/useLogin';
 import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
 import {useAuthActions} from '../../hooks/useAuthActions';
+import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 
 interface tokenType {
   aud: string;
@@ -111,6 +112,24 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
   //redux + hook
   const {authorize} = useAuthActions();
   const [isActive, setIsActive] = useState<boolean>(false);
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  const checkMultiplePermissions = () => {
+    checkMultiple([
+      PERMISSIONS.IOS.CONTACTS,
+      PERMISSIONS.IOS.CAMERA,
+      PERMISSIONS.IOS.PHOTO_LIBRARY,
+      PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
+      PERMISSIONS.IOS.MICROPHONE,
+    ]).then(response => {
+      console.log('MULTIPLE CHECK RESPONSE : ', response);
+      if (response) {
+        setIsChecked(true);
+      } else {
+        setIsChecked(false);
+      }
+    });
+  };
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -122,6 +141,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
       forceCodeForRefreshToken: true,
     });
     isSignedIn();
+    checkMultiplePermissions();
   }, []);
 
   const AppleSignIn = async () => {
@@ -225,7 +245,12 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
           onPress={() => toggleLoginButton()}>
           <ButtonText>Login</ButtonText>
         </LoginButton>
-        <SignUpTextView onPress={() => navigation.navigate('PermissionAuth')}>
+        <SignUpTextView
+          onPress={() =>
+            isChecked === true
+              ? navigation.navigate('PhoneAuth')
+              : navigation.navigate('PermissionAuth')
+          }>
           <SignUpText>Sign up here</SignUpText>
         </SignUpTextView>
         <SocialButtonWrapper>
