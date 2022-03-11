@@ -257,7 +257,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
           <SocialButton onPress={() => GoogleSignIn}>
             <ButtonText>G</ButtonText>
           </SocialButton>
-          <SocialButton onPress={() => AppleSignIn}>
+          <SocialButton onPress={() => navigation.navigate('MainTab')}>
             <ButtonText>A</ButtonText>
           </SocialButton>
         </SocialButtonWrapper>

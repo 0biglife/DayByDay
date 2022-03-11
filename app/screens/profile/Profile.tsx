@@ -39,78 +39,63 @@ const HeaderIconView = styled.View`
 //Header UI
 const HeaderView = styled.View`
   width: 100%;
-  height: 220px;
-  align-items: center;
+  height: 140px;
   justify-content: center;
-  position: absolute;
+  align-items: flex-start;
   background-color: ${props => props.theme.color.bg};
-  /* background-color: lightskyblue; */
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
 `;
 
 const AnimatedViewHeader = Animated.createAnimatedComponent(HeaderView);
 
 const ProfileImage = styled.Image`
-  width: 100px;
-  height: 100px;
+  width: 110px;
+  height: 110px;
   border-radius: 75px;
   align-self: flex-start;
   border-width: 0.5px;
   border-color: lightgray;
+  margin-left: 20px;
 `;
 
 const UserTopInfoContainer = styled.View`
   flex-direction: row;
-  justify-content: space-between;
+`;
+
+const UserInfoColumnWrapper = styled.View`
+  flex-direction: column;
 `;
 
 const UserInfoWrapper = styled.View`
-  flex: 3;
+  flex: 1;
+  height: 62px;
+  padding-left: 60px;
   flex-direction: row;
   justify-content: space-around;
-  align-self: center;
-  padding-left: 10px;
+  align-items: flex-start;
+  background-color: lightblue;
+  padding-left: 8px;
+  padding-top: 6px;
+  margin-left: 20px;
+  margin-right: 20px;
 `;
 
-const UserInfoItem = styled.View`
+const UserInfoSubWrapper = styled.View`
+  flex-direction: column;
   align-items: center;
-  /* justify-content: center; */
+  background-color: lightgoldenrodyellow;
 `;
 
-const UserInfoTitle = styled.Text`
-  font-size: 14px;
-  padding-top: 2px;
-  color: darkgray;
-`;
-
-const UserInfoSubTitle = styled.Text`
-  font-weight: 600;
+const TopInfo = styled.Text`
   font-size: 16px;
-`;
-
-const InfoContainer = styled.View`
-  padding: 4px;
-  width: 100%;
-`;
-
-const UserName = styled.Text`
-  font-size: 16px;
-  padding-top: 10px;
   font-weight: 500;
+  background-color: lightcoral;
 `;
 
-const UserDescription = styled.Text`
-  font-size: 14px;
-  padding-top: 4px;
-`;
-
-const UserButtonWrapper = styled.View`
-  flex-direction: row;
-  width: 100%;
-  justify-content: space-between;
-  padding-top: 4px;
+const DownInfo = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  background-color: lightcyan;
+  margin-top: 10px;
 `;
 
 const UserButton = styled.TouchableOpacity`
@@ -123,10 +108,9 @@ const UserButton = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const UserButtonText = styled.Text`
-  padding: 6px;
-  font-size: 14px;
-  align-self: center;
+const ButtonText = styled.Text`
+  font-size: 20px;
+  font-weight: 500;
 `;
 
 const imageSource = require('../../assets/images/profileDefault.jpeg');
@@ -201,24 +185,29 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
       <UserTopInfoContainer>
         <ProfileImage source={user?.thumbnailUrl ? imgData : imageSource} />
         <UserInfoWrapper>
-          <UserInfoItem>
-            <UserInfoSubTitle>273</UserInfoSubTitle>
-            <UserInfoTitle>Post</UserInfoTitle>
-          </UserInfoItem>
-          <UserInfoItem>
-            <UserInfoSubTitle>10.2M</UserInfoSubTitle>
-            <UserInfoTitle>Follower</UserInfoTitle>
-          </UserInfoItem>
-          <UserInfoItem>
-            <UserInfoSubTitle>821</UserInfoSubTitle>
-            <UserInfoTitle>Following</UserInfoTitle>
-          </UserInfoItem>
+          <UserInfoSubWrapper>
+            <TopInfo>MBTI</TopInfo>
+            <DownInfo>ENFJ</DownInfo>
+          </UserInfoSubWrapper>
+          <UserInfoSubWrapper>
+            <TopInfo>Follwer</TopInfo>
+            <DownInfo>20</DownInfo>
+          </UserInfoSubWrapper>
+          <UserInfoSubWrapper>
+            <TopInfo>Following</TopInfo>
+            <DownInfo>17</DownInfo>
+          </UserInfoSubWrapper>
         </UserInfoWrapper>
       </UserTopInfoContainer>
-      <InfoContainer>
-        <UserName>{user ? user.username : '로그인 필요'}</UserName>
-        <UserDescription>JustMusic Company, WYBH</UserDescription>
-      </InfoContainer>
+    </AnimatedViewHeader>
+  );
+};
+
+export default Profile;
+
+/*
+// Button Wrapper 
+
       <UserButtonWrapper>
         <UserButton
           onPress={() =>
@@ -236,8 +225,5 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
           <UserButtonText>로그아웃</UserButtonText>
         </UserButton>
       </UserButtonWrapper>
-    </AnimatedViewHeader>
-  );
-};
 
-export default Profile;
+*/
