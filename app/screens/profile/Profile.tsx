@@ -62,17 +62,16 @@ const UserTopInfoContainer = styled.View`
 `;
 
 const UserInfoColumnWrapper = styled.View`
+  flex: 1;
   flex-direction: column;
+  justify-content: space-between;
 `;
 
 const UserInfoWrapper = styled.View`
   flex: 1;
-  height: 62px;
-  padding-left: 60px;
   flex-direction: row;
   justify-content: space-around;
-  align-items: flex-start;
-  background-color: lightblue;
+  /* background-color: lightblue; */
   padding-left: 8px;
   padding-top: 6px;
   margin-left: 20px;
@@ -82,34 +81,51 @@ const UserInfoWrapper = styled.View`
 const UserInfoSubWrapper = styled.View`
   flex-direction: column;
   align-items: center;
-  background-color: lightgoldenrodyellow;
+  /* background-color: lightgoldenrodyellow; */
 `;
 
 const TopInfo = styled.Text`
   font-size: 16px;
   font-weight: 500;
-  background-color: lightcoral;
+  /* background-color: lightcoral; */
 `;
 
 const DownInfo = styled.Text`
   font-size: 16px;
-  font-weight: 600;
-  background-color: lightcyan;
+  font-weight: 400;
+  /* background-color: lightcyan; */
   margin-top: 10px;
 `;
 
+const ButtonWrapper = styled.View`
+  flex: 1;
+  padding-left: 60px;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  padding-left: 8px;
+  padding-right: 8px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  /* background-color: lightgray; */
+`;
+
 const UserButton = styled.TouchableOpacity`
-  width: 30%;
+  flex: 1;
   height: 32px;
   border-width: 1px;
   border-color: lightgray;
   background-color: ${prop => prop.theme.color.bg};
   border-radius: 6px;
+  margin-right: 2px;
+  margin-left: 2px;
   justify-content: center;
 `;
 
 const ButtonText = styled.Text`
-  font-size: 20px;
+  align-self: center;
+  font-size: 16px;
   font-weight: 500;
 `;
 
@@ -184,20 +200,27 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
     <AnimatedViewHeader>
       <UserTopInfoContainer>
         <ProfileImage source={user?.thumbnailUrl ? imgData : imageSource} />
-        <UserInfoWrapper>
-          <UserInfoSubWrapper>
-            <TopInfo>MBTI</TopInfo>
-            <DownInfo>ENFJ</DownInfo>
-          </UserInfoSubWrapper>
-          <UserInfoSubWrapper>
-            <TopInfo>Follwer</TopInfo>
-            <DownInfo>20</DownInfo>
-          </UserInfoSubWrapper>
-          <UserInfoSubWrapper>
-            <TopInfo>Following</TopInfo>
-            <DownInfo>17</DownInfo>
-          </UserInfoSubWrapper>
-        </UserInfoWrapper>
+        <UserInfoColumnWrapper>
+          <UserInfoWrapper>
+            <UserInfoSubWrapper>
+              <TopInfo>MBTI</TopInfo>
+              <DownInfo>ENFJ</DownInfo>
+            </UserInfoSubWrapper>
+            <UserInfoSubWrapper>
+              <TopInfo>Follwer</TopInfo>
+              <DownInfo>20</DownInfo>
+            </UserInfoSubWrapper>
+            <UserInfoSubWrapper>
+              <TopInfo>Following</TopInfo>
+              <DownInfo>17</DownInfo>
+            </UserInfoSubWrapper>
+          </UserInfoWrapper>
+          <ButtonWrapper>
+            <UserButton>
+              <ButtonText>Edit</ButtonText>
+            </UserButton>
+          </ButtonWrapper>
+        </UserInfoColumnWrapper>
       </UserTopInfoContainer>
     </AnimatedViewHeader>
   );
