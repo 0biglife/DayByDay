@@ -12,6 +12,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import androidx.multidex.MultiDexApplication;
 
+//react-native-reanimated
+import com.facebook.react.bridge.JSIModulePackage;
+import com.swmansion.reanimated.ReanimatedJSIModulePackage;
+
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
 
 public class MainApplication extends Application implements ReactApplication {
@@ -43,6 +47,12 @@ public class MainApplication extends Application implements ReactApplication {
         // public boolean canOverrideExistingModule() {
         //   return true;
         // }
+
+        //set for 'react-native-reanimated'
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new ReanimatedJSIModulePackage(); 
+        }
       };
 
       

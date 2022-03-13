@@ -39,6 +39,7 @@
     "react-native-modal": "13.0.0",
     "react-native-pager-view": "5.4.9",
     "react-native-permissions": "3.2.0",
+    "react-native-reanimated": "2.4.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "3.9.0",
     "react-native-sensitive-info": "6.0.0-alpha.9",

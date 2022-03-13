@@ -26,6 +26,7 @@ import authStorage from '../../apis/storages/authStorage';
 import {useAuthActions} from '../../hooks/useAuthActions';
 import {useUser} from '../../hooks/useUser';
 import authStateStorage from '../../apis/storages/authStateStorage';
+import {setConstantValue} from 'typescript';
 
 const HeaderIconView = styled.View`
   flex-direction: row;
@@ -118,8 +119,7 @@ const UserButton = styled.TouchableOpacity`
   border-color: lightgray;
   background-color: ${prop => prop.theme.color.bg};
   border-radius: 6px;
-  margin-right: 2px;
-  margin-left: 2px;
+  margin-left: 6px;
   justify-content: center;
 `;
 
@@ -128,6 +128,22 @@ const ButtonText = styled.Text`
   font-size: 16px;
   font-weight: 500;
 `;
+
+const BodySection = styled.View`
+  flex: 1;
+  background-color: lightgray;
+`;
+
+const windowWidth = Dimensions.get('window').width;
+const titleSize = windowWidth / 3;
+
+const TitleImage = styled.View`
+  width: ${titleSize * 2}px;
+  height: ${titleSize * 2}px;
+  background-color: lightgray;
+`;
+
+const SubImage1 = styled.View``;
 
 const imageSource = require('../../assets/images/profileDefault.jpeg');
 
@@ -138,11 +154,12 @@ interface ProfileProps {
   >;
 }
 
+const userName = 'Giriboy';
+
 const Profile: React.FC<ProfileProps> = ({navigation}) => {
   //Redux + hook
   const {logout} = useAuthActions();
   const {user} = useUser();
-
   const [modalVisible, setModalVisible] = useState(false);
   const [settingModalVisible, setSettingModalVisible] =
     useState<boolean>(false);
@@ -154,6 +171,7 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
     };
 
     navigation.setOptions({
+      headerTitle: userName,
       headerRight: () => {
         return (
           <HeaderIconView>
@@ -197,32 +215,43 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
   const parseData = user?.thumbnailUrl;
   const imgData = JSON.stringify(parseData);
   return (
-    <AnimatedViewHeader>
-      <UserTopInfoContainer>
-        <ProfileImage source={user?.thumbnailUrl ? imgData : imageSource} />
-        <UserInfoColumnWrapper>
-          <UserInfoWrapper>
-            <UserInfoSubWrapper>
-              <TopInfo>MBTI</TopInfo>
-              <DownInfo>ENFJ</DownInfo>
-            </UserInfoSubWrapper>
-            <UserInfoSubWrapper>
-              <TopInfo>Follwer</TopInfo>
-              <DownInfo>20</DownInfo>
-            </UserInfoSubWrapper>
-            <UserInfoSubWrapper>
-              <TopInfo>Following</TopInfo>
-              <DownInfo>17</DownInfo>
-            </UserInfoSubWrapper>
-          </UserInfoWrapper>
-          <ButtonWrapper>
-            <UserButton>
-              <ButtonText>Edit</ButtonText>
-            </UserButton>
-          </ButtonWrapper>
-        </UserInfoColumnWrapper>
-      </UserTopInfoContainer>
-    </AnimatedViewHeader>
+    <>
+      <AnimatedViewHeader>
+        <UserTopInfoContainer>
+          <ProfileImage source={user?.thumbnailUrl ? imgData : imageSource} />
+          <UserInfoColumnWrapper>
+            <UserInfoWrapper>
+              <UserInfoSubWrapper>
+                <TopInfo>MBTI</TopInfo>
+                <DownInfo>ENFJ</DownInfo>
+              </UserInfoSubWrapper>
+              <UserInfoSubWrapper>
+                <TopInfo>Follwer</TopInfo>
+                <DownInfo>20</DownInfo>
+              </UserInfoSubWrapper>
+              <UserInfoSubWrapper>
+                <TopInfo>Following</TopInfo>
+                <DownInfo>17</DownInfo>
+              </UserInfoSubWrapper>
+            </UserInfoWrapper>
+            <ButtonWrapper>
+              <UserButton
+                onPress={() =>
+                  navigation.navigate('EditProfile', {
+                    name: userName,
+                    imageSource: imageSource,
+                  })
+                }>
+                <ButtonText>Edit</ButtonText>
+              </UserButton>
+            </ButtonWrapper>
+          </UserInfoColumnWrapper>
+        </UserTopInfoContainer>
+      </AnimatedViewHeader>
+      <BodySection>
+        <TitleImage></TitleImage>
+      </BodySection>
+    </>
   );
 };
 
