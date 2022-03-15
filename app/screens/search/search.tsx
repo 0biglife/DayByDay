@@ -85,12 +85,14 @@ export interface SearchProps {
   route: RouteProp<SearchParamsList, 'Search'>;
 }
 
-const searchView: React.FC<SearchProps> = () => {
+const searchView: React.FC<SearchProps> = ({navigation}) => {
   const [value, setValue] = useState<string>('');
   const [dataList, setDataList] = useState([]);
 
   useEffect(() => {
-    //
+    navigation.setOptions({
+      headerShown: false,
+    });
   }, []);
 
   const ItemView = ({item}) => {
@@ -132,13 +134,12 @@ const searchView: React.FC<SearchProps> = () => {
     // searchData(text);
   };
 
-  const searchData = async (text) => {
+  const searchData = async text => {
     try {
       // apiClient.get<Response>('/feeds' + text.toLowerCase).then(response => {
       //   const jsonData = response.data;
       //   console.log('SEARCHVIEW : ', jsonData);
       // });
-
       // axios
       //   .get('https://api.unsplash.com/search/photos', {
       //     params: {query: text},
