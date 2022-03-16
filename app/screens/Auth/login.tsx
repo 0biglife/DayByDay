@@ -1,7 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {Alert, Platform} from 'react-native';
 import styled from 'styled-components/native';
-import {Input} from '../../components';
 //Social Login
 import {
   GoogleSignin,
@@ -21,6 +20,7 @@ import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
 import {useAuthActions} from '../../hooks/useAuthActions';
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
+import {TextInput} from 'react-native-gesture-handler';
 
 interface tokenType {
   aud: string;
@@ -96,6 +96,22 @@ const SignUpText = styled.Text`
   font-weight: 400;
 `;
 
+const InputContainer = styled.View`
+  background-color: white;
+  border-color: lightgray;
+  border-width: 1.2px;
+  border-radius: 24px;
+  min-width: 85%;
+  margin-top: 10px;
+  align-self: center;
+`;
+
+const Input = styled.TextInput`
+  padding: 15px;
+  height: 48px;
+  margin-right: 8px;
+`;
+
 export interface LoginProps {
   navigation: CompositeNavigationProp<
     StackNavigationProp<AuthStackParamList, 'Login'>,
@@ -113,6 +129,8 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
   const {authorize} = useAuthActions();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const emailRef = useRef<TextInput | null>(null);
+  const passwordRef = useRef<TextInput | null>(null);
 
   const checkMultiplePermissions = () => {
     checkMultiple([
@@ -224,10 +242,47 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
       : setIsActive(false);
   };
 
+  const onChangeEmail = useCallback(text => {
+    setIdentifier(text.trim());
+  }, []);
+
+  const onChangePassword = useCallback(text => {
+    setPassword(text.trim());
+  }, []);
+
   return (
     <SafeAreaContainer>
       <Container>
-        <Input
+        <InputContainer>
+          <Input
+            placeholder="이메일을 입력해주세요"
+            onChangeText={text => onChangeEmail(text)}
+            importantForAutofill="yes"
+            autoCompleteType="email"
+            textContentType="emailAddress"
+            value={identifier}
+            returnKeyType="next"
+            clearButtonMode="while-editing"
+            blurOnSubmit={false}
+            ref={emailRef}
+            onSubmitEditing={() => passwordRef.current?.}
+          />
+        </InputContainer>
+        <InputContainer>
+          <Input
+            placeholder="비밀번호를 입력해주세요"
+            onChangeText={text => onChangePassword(text)}
+            importantForAutofill="yes"
+            autoCompleteType="password"
+            textContentType="password"
+            value={password}
+            returnKeyType="send"
+            clearButtonMode="while-editing"
+            secureTextEntry
+            ref={passwordRef}
+          />
+        </InputContainer>
+        {/* <Input
           placeholder="email"
           onChangeText={text => setIdentifier(text)}
           onKeyPressed={() => isActiveReady()}
@@ -236,7 +291,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
           placeholder="password"
           onChangeText={text => setPassword(text)}
           onKeyPressed={() => isActiveReady()}
-        />
+        /> */}
         <LoginButton
           style={{
             backgroundColor: isActive === true ? 'gray' : 'lightgray',

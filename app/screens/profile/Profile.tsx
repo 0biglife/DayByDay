@@ -143,7 +143,6 @@ const TitleImage = styled.View`
   background-color: lightgray;
 `;
 
-const SubImage1 = styled.View``;
 
 const imageSource = require('../../assets/images/profileDefault.jpeg');
 
@@ -236,11 +235,12 @@ const Profile: React.FC<ProfileProps> = ({navigation}) => {
             </UserInfoWrapper>
             <ButtonWrapper>
               <UserButton
-                onPress={() =>
-                  navigation.navigate('EditProfile', {
-                    name: userName,
-                    imageSource: imageSource,
-                  })
+                onPress={
+                  () => userLogout()
+                  // navigation.navigate('EditProfile', {
+                  //   name: userName,
+                  //   imageSource: imageSource,
+                  // })
                 }>
                 <ButtonText>Edit</ButtonText>
               </UserButton>

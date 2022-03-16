@@ -36,6 +36,7 @@ const RootStack = () => {
       {authState.isLoggedIn ? (
         <>
           <Stack.Screen name="MainTab" component={MainTab} />
+          <Stack.Screen name="AuthStack" component={AuthStack} />
           <Stack.Screen name="Message" component={MessageView} />
           <Stack.Screen name="EditProfile" component={editProfileView} />
           <Stack.Screen name="UserProfile" component={UserProfile} />

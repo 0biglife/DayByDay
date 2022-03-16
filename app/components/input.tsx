@@ -37,6 +37,10 @@ const Input: React.FC<Props> = props => {
         onChangeText={props.onChangeText}
         autoCapitalize="none"
         onKeyPress={props.onKeyPressed}
+        //아래는 로그인을 위한 설정
+        // importantForAutofill="yes"
+        // autoCompleteType="email"
+        // textContentType="emailAddress"
       />
     </Container>
   );
