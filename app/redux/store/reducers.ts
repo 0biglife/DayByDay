@@ -1,10 +1,12 @@
 import {combineReducers} from 'redux';
 import auth from '../slices/auth';
 import authState from '../slices/authState';
+import userSlice from '../slices/user';
 
 const rootReducer = combineReducers({
   auth,
   authState,
+  user: userSlice.reducer,
 });
 
 //RootReducer의 반환값 타입형은 RootState type alias로 지정 가능
@@ -21,3 +23,6 @@ declare module 'react-redux' {
 //오.. 이로써 매번 쓰던 useSelector 인자의 RootState는 생략 가능해졌다.
 //엄청나군..
 export default rootReducer;
+
+
+//test
