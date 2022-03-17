@@ -16,6 +16,7 @@ import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
 import {useAuthActions} from '../../hooks/useAuthActions';
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
+import {DismissKeyboardView} from '../../components';
 
 interface tokenType {
   aud: string;
@@ -255,69 +256,71 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
   }, [identifier, password]);
 
   return (
-    <SafeAreaContainer>
-      <Container>
-        <InputContainer>
-          <Input
-            placeholder="이메일을 입력해주세요"
-            onChangeText={text => onChangeEmail(text)}
-            importantForAutofill="yes"
-            autoCompleteType="email"
-            textContentType="emailAddress"
-            keyboardType="email-address"
-            value={identifier}
-            returnKeyType="next"
-            clearButtonMode="while-editing"
-            autoCapitalize="none"
-            ref={emailRef}
-            onSubmitEditing={() => passwordRef.current?.focus()}
-            blurOnSubmit={false}
-            onKeyPress={() => isActiveReady()}
-          />
-        </InputContainer>
-        <InputContainer>
-          <Input
-            placeholder="비밀번호를 입력해주세요"
-            onChangeText={text => onChangePassword(text)}
-            importantForAutofill="yes"
-            autoCompleteType="password"
-            textContentType="password"
-            secureTextEntry
-            value={password}
-            returnKeyType="send"
-            clearButtonMode="while-editing"
-            autoCapitalize="none"
-            ref={passwordRef}
-            onSubmitEditing={onSubmit}
-            onKeyPress={() => isActiveReady()}
-          />
-        </InputContainer>
-        <LoginButton
-          style={{
-            backgroundColor: isActive === true ? 'gray' : 'lightgray',
-          }}
-          disabled={!isActive}
-          onPress={() => toggleLoginButton()}>
-          <ButtonText>Login</ButtonText>
-        </LoginButton>
-        <SignUpTextView
-          onPress={() =>
-            isChecked === true
-              ? navigation.navigate('SignUp')
-              : navigation.navigate('PermissionAuth')
-          }>
-          <SignUpText>Sign up here</SignUpText>
-        </SignUpTextView>
-        <SocialButtonWrapper>
-          <SocialButton onPress={() => GoogleSignIn}>
-            <ButtonText>G</ButtonText>
-          </SocialButton>
-          <SocialButton onPress={() => navigation.navigate('MainTab')}>
-            <ButtonText>A</ButtonText>
-          </SocialButton>
-        </SocialButtonWrapper>
-      </Container>
-    </SafeAreaContainer>
+    <DismissKeyboardView>
+      <SafeAreaContainer>
+        <Container>
+          <InputContainer>
+            <Input
+              placeholder="이메일을 입력해주세요"
+              onChangeText={text => onChangeEmail(text)}
+              importantForAutofill="yes"
+              autoCompleteType="email"
+              textContentType="emailAddress"
+              keyboardType="email-address"
+              value={identifier}
+              returnKeyType="next"
+              clearButtonMode="while-editing"
+              autoCapitalize="none"
+              ref={emailRef}
+              onSubmitEditing={() => passwordRef.current?.focus()}
+              blurOnSubmit={false}
+              onKeyPress={() => isActiveReady()}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Input
+              placeholder="비밀번호를 입력해주세요"
+              onChangeText={text => onChangePassword(text)}
+              importantForAutofill="yes"
+              autoCompleteType="password"
+              textContentType="password"
+              secureTextEntry
+              value={password}
+              returnKeyType="send"
+              clearButtonMode="while-editing"
+              autoCapitalize="none"
+              ref={passwordRef}
+              onSubmitEditing={onSubmit}
+              onKeyPress={() => isActiveReady()}
+            />
+          </InputContainer>
+          <LoginButton
+            style={{
+              backgroundColor: isActive === true ? 'gray' : 'lightgray',
+            }}
+            disabled={!isActive}
+            onPress={() => toggleLoginButton()}>
+            <ButtonText>Login</ButtonText>
+          </LoginButton>
+          <SignUpTextView
+            onPress={() =>
+              isChecked === true
+                ? navigation.navigate('SignUp')
+                : navigation.navigate('PermissionAuth')
+            }>
+            <SignUpText>Sign up here</SignUpText>
+          </SignUpTextView>
+          <SocialButtonWrapper>
+            <SocialButton onPress={() => GoogleSignIn}>
+              <ButtonText>G</ButtonText>
+            </SocialButton>
+            <SocialButton onPress={() => navigation.navigate('MainTab')}>
+              <ButtonText>A</ButtonText>
+            </SocialButton>
+          </SocialButtonWrapper>
+        </Container>
+      </SafeAreaContainer>
+    </DismissKeyboardView>
   );
 };
 
