@@ -1,23 +1,10 @@
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
-//Social Login
-import {
-  GoogleSignin,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
-import jwtDecode from 'jwt-decode';
-
-//Token Control
-import {StackNavigationProp} from '@react-navigation/stack';
-import {AuthStackParamList, RootStackparamList} from '../../navigations/Types';
-import useLogin from '../../hooks/useLogin';
-import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
-import {useAuthActions} from '../../hooks/useAuthActions';
-import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import useRegister from '../../hooks/useRegister';
+import {RootStackparamList} from '../../navigations/Types';
 
 interface tokenType {
   aud: string;

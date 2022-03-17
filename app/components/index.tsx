@@ -4,5 +4,14 @@ import PostCard from './PostCard';
 import MenuModal from './MenuModal';
 import SettingModal from './SettingModal';
 import HeartButton from './HeartButton';
+import DismissKeyboardView from './DismissKeyboardView';
 
-export {Input, Button, PostCard, MenuModal, SettingModal, HeartButton};
+export {
+  Input,
+  DismissKeyboardView,
+  Button,
+  PostCard,
+  MenuModal,
+  SettingModal,
+  HeartButton,
+};
