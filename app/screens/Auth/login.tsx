@@ -272,6 +272,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             ref={emailRef}
             onSubmitEditing={() => passwordRef.current?.focus()}
             blurOnSubmit={false}
+            onKeyPress={() => isActiveReady()}
           />
         </InputContainer>
         <InputContainer>
@@ -288,18 +289,9 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             autoCapitalize="none"
             ref={passwordRef}
             onSubmitEditing={onSubmit}
+            onKeyPress={() => isActiveReady()}
           />
         </InputContainer>
-        {/* <Input
-          placeholder="email"
-          onChangeText={text => setIdentifier(text)}
-          onKeyPressed={() => isActiveReady()}
-        />
-        <Input
-          placeholder="password"
-          onChangeText={text => setPassword(text)}
-          onKeyPressed={() => isActiveReady()}
-        /> */}
         <LoginButton
           style={{
             backgroundColor: isActive === true ? 'gray' : 'lightgray',
