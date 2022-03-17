@@ -1,26 +1,21 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Alert, Platform} from 'react-native';
+import {Alert} from 'react-native';
 import styled from 'styled-components/native';
 //Social Login
 import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import appleAuth, {
-  AppleButton,
-} from '@invertase/react-native-apple-authentication';
 import jwtDecode from 'jwt-decode';
 
 //Token Control
 import {StackNavigationProp} from '@react-navigation/stack';
 import {AuthStackParamList, RootStackparamList} from '../../navigations/Types';
-import {GoogleUser} from '../../apis/model/data';
 import useLogin from '../../hooks/useLogin';
 import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
 import {useAuthActions} from '../../hooks/useAuthActions';
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
-import {TextInput} from 'react-native-gesture-handler';
 
 interface tokenType {
   aud: string;
@@ -140,7 +135,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
       PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
       PERMISSIONS.IOS.MICROPHONE,
     ]).then(response => {
-      console.log('MULTIPLE CHECK RESPONSE : ', response);
+      // console.log('MULTIPLE CHECK RESPONSE : ', response);
       if (response) {
         setIsChecked(true);
       } else {
@@ -250,6 +245,15 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
     setPassword(text.trim());
   }, []);
 
+  const onSubmit = useCallback(() => {
+    if (!identifier || !identifier.trim()) {
+      return Alert.alert('이메일을 입력해주세요');
+    }
+    if (!password || !password.trim()) {
+      return Alert.alert('비밀번호를 입력하세요');
+    }
+  }, [identifier, password]);
+
   return (
     <SafeAreaContainer>
       <Container>
@@ -260,12 +264,14 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             importantForAutofill="yes"
             autoCompleteType="email"
             textContentType="emailAddress"
+            keyboardType="email-address"
             value={identifier}
             returnKeyType="next"
             clearButtonMode="while-editing"
-            blurOnSubmit={false}
+            autoCapitalize="none"
             ref={emailRef}
-            onSubmitEditing={() => passwordRef.current?.}
+            onSubmitEditing={() => passwordRef.current?.focus()}
+            blurOnSubmit={false}
           />
         </InputContainer>
         <InputContainer>
@@ -275,11 +281,13 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             importantForAutofill="yes"
             autoCompleteType="password"
             textContentType="password"
+            secureTextEntry
             value={password}
             returnKeyType="send"
             clearButtonMode="while-editing"
-            secureTextEntry
+            autoCapitalize="none"
             ref={passwordRef}
+            onSubmitEditing={onSubmit}
           />
         </InputContainer>
         {/* <Input
@@ -303,7 +311,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
         <SignUpTextView
           onPress={() =>
             isChecked === true
-              ? navigation.navigate('PhoneAuth')
+              ? navigation.navigate('SignUp')
               : navigation.navigate('PermissionAuth')
           }>
           <SignUpText>Sign up here</SignUpText>

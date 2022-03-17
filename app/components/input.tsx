@@ -18,6 +18,7 @@ const Container = styled.View`
 const CustomInput = styled.TextInput`
   padding: 15px;
   height: 48px;
+  margin-right: 8px;
 `;
 
 interface Props {
@@ -30,18 +31,7 @@ interface Props {
 const Input: React.FC<Props> = props => {
   return (
     <Container>
-      <CustomInput
-        {...props}
-        placeholder={props.placeholder}
-        secureTextEntry={props.secureTextEntry || false}
-        onChangeText={props.onChangeText}
-        autoCapitalize="none"
-        onKeyPress={props.onKeyPressed}
-        //아래는 로그인을 위한 설정
-        // importantForAutofill="yes"
-        // autoCompleteType="email"
-        // textContentType="emailAddress"
-      />
+      <CustomInput {...props} autoCapitalize="none" />
     </Container>
   );
 };

@@ -55,3 +55,4 @@ const signupView: React.FC<SignUpProps> = ({navigation}) => {
 };
 
 export default signupView;
+
