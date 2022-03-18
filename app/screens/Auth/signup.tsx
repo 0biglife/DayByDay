@@ -4,8 +4,11 @@ import styled from 'styled-components/native';
 //Redux
 import useRegister from '../../hooks/useRegister';
 import {DismissKeyboardView} from '../../components';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackparamList} from '../../navigations/Types';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
+import {AuthParamList} from '../../navigations/Types';
 
 interface tokenType {
   aud: string;
@@ -66,11 +69,9 @@ const Input = styled.TextInput`
   margin-right: 8px;
 `;
 
-export interface SignUpProps {
-  navigation: NativeStackNavigationProp<RootStackparamList, 'AuthStack'>;
-}
+type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
 
-const signupView: React.FC<SignUpProps> = ({navigation}) => {
+const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   const {mutate: register, isLoading: isLoading} = useRegister();
   //redux + hook
   const [isActive, setIsActive] = useState<boolean>(false);
@@ -227,4 +228,4 @@ const signupView: React.FC<SignUpProps> = ({navigation}) => {
   );
 };
 
-export default signupView;
+export default SignUp;

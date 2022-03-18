@@ -1,59 +1,24 @@
 import React from 'react';
 //View Module Stacks
-import AuthStack from './AuthStack';
-import {RootStackparamList} from './Types';
-import {
-  createNativeStackNavigator,
-  NativeStackNavigationOptions,
-} from '@react-navigation/native-stack';
-import {
-  ArticleView,
-  editProfileView,
-  MessageView,
-  UploadModal,
-  UserProfile,
-} from '../screens';
-import MainTab from './MainTab';
-import useAuthLoadEffect from '../hooks/useAuthLoadEffect';
-import {useLoggedIn} from '../hooks/useUserState';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {RootState} from '../redux/store/reducers';
+import {useSelector} from 'react-redux';
+import {login} from '../apis/service/auth';
 
-const Stack = createNativeStackNavigator<RootStackparamList>();
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
-  useAuthLoadEffect();
-  const authState = useLoggedIn();
-  const navigationOptions: NativeStackNavigationOptions = {
-    headerShown: false,
-    gestureEnabled: false,
-  };
+  const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
 
-  console.log('RootStack: ', authState.isLoggedIn);
-
-  return (
-    <Stack.Navigator
-      // initialRouteName={authState.isLoggedIn ? 'MainTab' : 'AuthStack'}
-      screenOptions={navigationOptions}>
-      {authState.isLoggedIn ? (
-        <>
-          <Stack.Screen name="MainTab" component={MainTab} />
-          <Stack.Screen name="AuthStack" component={AuthStack} />
-          <Stack.Screen name="Message" component={MessageView} />
-          <Stack.Screen name="EditProfile" component={editProfileView} />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
-          <Stack.Screen name="Upload" component={UploadModal} />
-          <Stack.Screen name="Article" component={ArticleView} />
-        </>
-      ) : (
-        <>
-          <Stack.Screen name="AuthStack" component={AuthStack} />
-          <Stack.Screen name="MainTab" component={MainTab} />
-          <Stack.Screen name="Message" component={MessageView} />
-          <Stack.Screen name="EditProfile" component={editProfileView} />
-          <Stack.Screen name="UserProfile" component={UserProfile} />
-          <Stack.Screen name="Upload" component={UploadModal} />
-          <Stack.Screen name="Article" component={ArticleView} />
-        </>
-      )}
+  return isLoggedIn ? (
+    <Tab.Navigator>
+      <Tab.Screen />
+    </Tab.Navigator>
+  ) : (
+    <Stack.Navigator>
+      <Stack.Screen name="LogIn" component={login} />
     </Stack.Navigator>
   );
 };

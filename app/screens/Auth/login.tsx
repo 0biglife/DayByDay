@@ -10,13 +10,18 @@ import jwtDecode from 'jwt-decode';
 
 //Token Control
 import {StackNavigationProp} from '@react-navigation/stack';
-import {AuthStackParamList, RootStackparamList} from '../../navigations/Types';
+import {
+  AuthParamList,
+  AuthStackParamList,
+  RootStackparamList,
+} from '../../navigations/Types';
 import useLogin from '../../hooks/useLogin';
 import {CompositeNavigationProp} from '@react-navigation/native';
 //Redux
 import {useAuthActions} from '../../hooks/useAuthActions';
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 import {DismissKeyboardView} from '../../components';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 interface tokenType {
   aud: string;
@@ -108,14 +113,9 @@ const Input = styled.TextInput`
   margin-right: 8px;
 `;
 
-export interface LoginProps {
-  navigation: CompositeNavigationProp<
-    StackNavigationProp<AuthStackParamList, 'Login'>,
-    StackNavigationProp<RootStackparamList>
-  >;
-}
+type LogInProps = NativeStackScreenProps<AuthParamList, 'LogIn'>;
 
-const loginView: React.FC<LoginProps> = ({navigation}) => {
+const LogIn: React.FC<LogInProps> = ({navigation}) => {
   const {mutate: login, isLoading: isLoading} = useLogin();
   const [user, setUser] = useState({});
   //login data
@@ -306,7 +306,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             onPress={() =>
               isChecked === true
                 ? navigation.navigate('SignUp')
-                : navigation.navigate('PermissionAuth')
+                : navigation.navigate('SignUp')
             }>
             <SignUpText>Sign up here</SignUpText>
           </SignUpTextView>
@@ -314,7 +314,7 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
             <SocialButton onPress={() => GoogleSignIn}>
               <ButtonText>G</ButtonText>
             </SocialButton>
-            <SocialButton onPress={() => navigation.navigate('MainTab')}>
+            <SocialButton>
               <ButtonText>A</ButtonText>
             </SocialButton>
           </SocialButtonWrapper>
@@ -324,4 +324,4 @@ const loginView: React.FC<LoginProps> = ({navigation}) => {
   );
 };
 
-export default loginView;
+export default LogIn;
