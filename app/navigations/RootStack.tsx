@@ -25,6 +25,7 @@ const RootStack = () => {
         name="Delivery"
         component={Delivery}
         options={{title: '업무'}}
+        x
       />
       <Tab.Screen
         name="Settings"
