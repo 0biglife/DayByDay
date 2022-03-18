@@ -9,18 +9,10 @@ import {
 import jwtDecode from 'jwt-decode';
 
 //Token Control
-import {StackNavigationProp} from '@react-navigation/stack';
-import {
-  AuthParamList,
-  AuthStackParamList,
-  RootStackparamList,
-} from '../../navigations/Types';
-import useLogin from '../../hooks/useLogin';
-import {CompositeNavigationProp} from '@react-navigation/native';
+import {AuthParamList} from '../../navigations/Types';
 //Redux
-import {useAuthActions} from '../../hooks/useAuthActions';
 import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
-import {DismissKeyboardView} from '../../components';
+import DismissKeyboardView from '../../components/DismissKeyboardView';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 interface tokenType {
@@ -116,13 +108,10 @@ const Input = styled.TextInput`
 type LogInProps = NativeStackScreenProps<AuthParamList, 'LogIn'>;
 
 const LogIn: React.FC<LogInProps> = ({navigation}) => {
-  const {mutate: login, isLoading: isLoading} = useLogin();
-  const [user, setUser] = useState({});
   //login data
   const [identifier, setIdentifier] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   //redux + hook
-  const {authorize} = useAuthActions();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isChecked, setIsChecked] = useState<boolean>(false);
   const emailRef = useRef<TextInput | null>(null);

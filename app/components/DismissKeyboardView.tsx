@@ -1,5 +1,5 @@
 import React from 'react';
-import {Keyboard, Platform, StyleProp, ViewStyle} from 'react-native';
+import {Keyboard, StyleProp, ViewStyle} from 'react-native';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 

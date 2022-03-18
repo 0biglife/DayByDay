@@ -2,12 +2,8 @@ import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Redux
-import useRegister from '../../hooks/useRegister';
-import {DismissKeyboardView} from '../../components';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import DismissKeyboardView from '../../components/DismissKeyboardView';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthParamList} from '../../navigations/Types';
 
 interface tokenType {
@@ -72,8 +68,6 @@ const Input = styled.TextInput`
 type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
-  const {mutate: register, isLoading: isLoading} = useRegister();
-  //redux + hook
   const [isActive, setIsActive] = useState<boolean>(false);
   const [username, setUsername] = useState<string>('');
   const [email, setEmail] = useState<string>('');
@@ -85,14 +79,6 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   const passwordConfirmedRef = useRef<TextInput | null>(null);
 
   const signUpTapped = () => {
-    if (isLoading) {
-      return;
-    }
-    register({
-      username,
-      email,
-      password,
-    });
     console.log('SignUp View Navigation');
     navigation.pop();
   };

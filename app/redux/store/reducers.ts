@@ -4,8 +4,6 @@ import authState from '../slices/authState';
 import userSlice from '../slices/user';
 
 const rootReducer = combineReducers({
-  auth,
-  authState,
   user: userSlice.reducer,
 });
 

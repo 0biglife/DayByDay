@@ -1,45 +1,39 @@
 import React, {useCallback} from 'react';
 import {Alert, Pressable, StyleSheet, Text, View} from 'react-native';
 import axios, {AxiosError} from 'axios';
-import Config from 'react-native-config';
-import {useAppDispatch} from '../store';
-import userSlice from '../slices/user';
-import {useSelector} from 'react-redux';
-import {RootState} from '../store/reducer';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 const Settings = () => {
-  const accessToken = useSelector((state: RootState) => state.user.accessToken);
-  const dispatch = useAppDispatch();
-  const onLogout = useCallback(async () => {
-    try {
-      await axios.post(
-        `${Config.API_URL}/logout`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        },
-      );
-      Alert.alert('알림', '로그아웃 되었습니다.');
-      dispatch(
-        userSlice.actions.setUser({
-          name: '',
-          email: '',
-          accessToken: '',
-        }),
-      );
-      await EncryptedStorage.removeItem('refreshToken');
-    } catch (error) {
-      const errorResponse = (error as AxiosError).response;
-      console.error(errorResponse);
-    }
-  }, [accessToken, dispatch]);
+  // const accessToken = useSelector((state: RootState) => state.user.accessToken);
+  // const dispatch = useAppDispatch();
+  // const onLogout = useCallback(async () => {
+  //   try {
+  //     await axios.post(
+  //       `${Config.API_URL}/logout`,
+  //       {},
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${accessToken}`,
+  //         },
+  //       },
+  //     );
+  //     Alert.alert('알림', '로그아웃 되었습니다.');
+  //     dispatch(
+  //       userSlice.actions.setUser({
+  //         name: '',
+  //         email: '',
+  //         accessToken: '',
+  //       }),
+  //     );
+  //     await EncryptedStorage.removeItem('refreshToken');
+  //   } catch (error) {
+  //     const errorResponse = (error as AxiosError).response;
+  //     console.error(errorResponse);
+  //   }
+  // }, [accessToken, dispatch]);
 
   return (
     <View>
-      <View style={styles.buttonZone}>
+      {/* <View style={styles.buttonZone}>
         <Pressable
           style={StyleSheet.compose(
             styles.loginButton,
@@ -48,7 +42,7 @@ const Settings = () => {
           onPress={onLogout}>
           <Text style={styles.loginButtonText}>로그아웃</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   );
 };

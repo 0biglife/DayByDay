@@ -4,11 +4,8 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {RootState} from '../redux/store/reducers';
 import {useSelector} from 'react-redux';
-import {login} from '../apis/service/auth';
-import {LogIn, SignUp} from '../screens';
-import Orders from '../screens/MainTab/Orders';
+import {LogIn, SignUp, Orders, Settings} from '../screens';
 import Delivery from './DeliveryStack';
-import Settings from '../screens/MainTab/Settings';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -29,8 +26,8 @@ const RootStack = () => {
         options={{title: '업무'}}
       />
       <Tab.Screen
-        name="Orders"
-        component={Orders}
+        name="Settings"
+        component={Settings}
         options={{title: '내 정보'}}
       />
     </Tab.Navigator>
