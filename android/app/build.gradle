@@ -225,6 +225,8 @@ dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     // implementation "com.android.support:appcompat-v7:${rootProject.ext.supportLibVersion}"
     implementation "com.facebook.react:react-native:+" 
+    //react-native-config
+    implementation project(':react-native-config')
 
     implementation 'androidx.multidex:multidex:2.0.1'
 

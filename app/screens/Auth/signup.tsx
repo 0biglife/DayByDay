@@ -7,6 +7,7 @@ import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthParamList} from '../../navigations/Types';
 //Axios
 import axios, {AxiosError} from 'axios';
+import Config from 'react-native-config';
 
 interface tokenType {
   aud: string;
@@ -81,11 +82,6 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
   //Logic
   const [loading, setLoading] = useState<boolean>(false);
 
-  const signUpTapped = () => {
-    console.log('SignUp View Navigation');
-    navigation.pop();
-  };
-
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());
   }, []);
@@ -129,16 +125,15 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
 
     try {
       setLoading(true);
-      const response = await axios.post(
-        `${__DEV__ ? 'localhost3105/user' : 'real-server-url'}`,
-        {
-          email,
-          name,
-          password,
-        },
-      );
+      const response = await axios.post(`${Config.API_URL}/user`, {
+        email,
+        name,
+        password,
+      });
+      console.log('Succeed');
       console.log('SignUp Response : ', response.data);
       Alert.alert('회원가입이 완료되었습니다.');
+      navigation.navigate('LogIn');
     } catch (error) {
       //error는 unknown이기 때문에 우리가 타입을 지정을 해서 추론해야한다!
       //따라서 이 에러가 네트워크 에러인지 문법에러인지 타입스크립트 활용 가능.
@@ -214,7 +209,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
             //사용자가 버튼을 연달아누를 시 중복가입 방지용
             //사용자는 해커라고 생각하고 코드로 구현
             disabled={!canGoNext || loading}
-            onPress={() => signUpTapped()}>
+            onPress={onSubmit}>
             {loading ? (
               <ActivityIndicator color="white" size="small" style={{}} />
             ) : (
