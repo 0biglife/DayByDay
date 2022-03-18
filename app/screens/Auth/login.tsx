@@ -108,31 +108,15 @@ const Input = styled.TextInput`
 type LogInProps = NativeStackScreenProps<AuthParamList, 'LogIn'>;
 
 const LogIn: React.FC<LogInProps> = ({navigation}) => {
-  //login data
-  const [identifier, setIdentifier] = useState<string>('');
+  //Data Model
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  //redux + hook
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [isChecked, setIsChecked] = useState<boolean>(false);
+  //Hooks
   const emailRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
-
-  const checkMultiplePermissions = () => {
-    checkMultiple([
-      PERMISSIONS.IOS.CONTACTS,
-      PERMISSIONS.IOS.CAMERA,
-      PERMISSIONS.IOS.PHOTO_LIBRARY,
-      PERMISSIONS.IOS.PHOTO_LIBRARY_ADD_ONLY,
-      PERMISSIONS.IOS.MICROPHONE,
-    ]).then(response => {
-      // console.log('MULTIPLE CHECK RESPONSE : ', response);
-      if (response) {
-        setIsChecked(true);
-      } else {
-        setIsChecked(false);
-      }
-    });
-  };
+  //Logic
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -144,26 +128,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       forceCodeForRefreshToken: true,
     });
     isSignedIn();
-    checkMultiplePermissions();
   }, []);
-
-  const AppleSignIn = async () => {
-    const appleAuthRequestResponse = await appleAuth.performRequest({
-      // performs login request
-      requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
-    });
-    //get user auth
-    const credentialState = await appleAuth.getCredentialStateForUser(
-      appleAuthRequestResponse.user,
-    );
-    if (credentialState === appleAuth.State.AUTHORIZED) {
-      const {identityToken, email, user} = appleAuthRequestResponse;
-      const decodedToken: tokenType = jwtDecode(identityToken!);
-      console.log('Apple Login Test!!!');
-      console.log('Apple Auth - decodedToken : ', decodedToken);
-    }
-  };
 
   const GoogleSignIn = async () => {
     try {
@@ -211,24 +176,24 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     }
   };
 
-  const toggleLoginButton = () => {
+  const toLogin = () => {
     if (isLoading) {
       return;
     }
     login({
-      identifier,
+      identifier: email,
       password,
     });
   };
 
   const isActiveReady = () => {
-    return identifier.includes('@') && password.length > 1
+    return email.includes('@') && password.length > 1
       ? setIsActive(true)
       : setIsActive(false);
   };
 
   const onChangeEmail = useCallback(text => {
-    setIdentifier(text.trim());
+    setEmail(text.trim());
   }, []);
 
   const onChangePassword = useCallback(text => {
@@ -236,13 +201,18 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
   }, []);
 
   const onSubmit = useCallback(() => {
-    if (!identifier || !identifier.trim()) {
+    if (loading) {
+      return;
+    }
+    //TextInput Checking
+    if (!email || !email.trim()) {
       return Alert.alert('이메일을 입력해주세요');
     }
     if (!password || !password.trim()) {
       return Alert.alert('비밀번호를 입력하세요');
     }
-  }, [identifier, password]);
+    //API Call
+  }, [email, loading, password]);
 
   return (
     <DismissKeyboardView>
@@ -256,7 +226,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
               autoCompleteType="email"
               textContentType="emailAddress"
               keyboardType="email-address"
-              value={identifier}
+              value={email}
               returnKeyType="next"
               clearButtonMode="while-editing"
               autoCapitalize="none"
@@ -285,18 +255,13 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
           </InputContainer>
           <LoginButton
             style={{
-              backgroundColor: isActive === true ? 'gray' : 'lightgray',
+              backgroundColor: isActive ? 'gray' : 'lightgray',
             }}
-            disabled={!isActive}
-            onPress={() => toggleLoginButton()}>
+            disabled={!isActive || loading}
+            onPress={() => onSubmit}>
             <ButtonText>Login</ButtonText>
           </LoginButton>
-          <SignUpTextView
-            onPress={() =>
-              isChecked === true
-                ? navigation.navigate('SignUp')
-                : navigation.navigate('SignUp')
-            }>
+          <SignUpTextView onPress={() => navigation.navigate('SignUp')}>
             <SignUpText>Sign up here</SignUpText>
           </SignUpTextView>
           <SocialButtonWrapper>

@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 const Delivery = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Ing">
       <Stack.Screen name="Ing" component={Ing} options={{title: '내 오더'}} />
       <Stack.Screen
         name="Complete"

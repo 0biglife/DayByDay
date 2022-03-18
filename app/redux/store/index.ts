@@ -4,6 +4,7 @@ import rootReducer from './reducers';
 
 const store = configureStore({
   reducer: rootReducer,
+  //middleware for flipper-!
   middleware: getDefaultMiddleware => {
     if (__DEV__) {
       const createDebugger = require('redux-flipper').default;

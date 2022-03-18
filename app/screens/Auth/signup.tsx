@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useCallback, useRef} from 'react';
-import {Alert, TextInput} from 'react-native';
+import React, {useState, useCallback, useRef} from 'react';
+import {ActivityIndicator, Alert, TextInput} from 'react-native';
 import styled from 'styled-components/native';
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {AuthParamList} from '../../navigations/Types';
+//Axios
+import axios, {AxiosError} from 'axios';
 
 interface tokenType {
   aud: string;
@@ -68,86 +70,90 @@ const Input = styled.TextInput`
 type SignUpProps = NativeStackScreenProps<AuthParamList, 'SignUp'>;
 
 const SignUp: React.FC<SignUpProps> = ({navigation}) => {
-  const [isActive, setIsActive] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
+  //Data Model
   const [email, setEmail] = useState<string>('');
+  const [name, setName] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const [passwordConfirmed, setPasswordConfirmed] = useState<string>('');
+  //Hooks
   const nameRef = useRef<TextInput | null>(null);
   const emailRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
-  const passwordConfirmedRef = useRef<TextInput | null>(null);
+  //Logic
+  const [loading, setLoading] = useState<boolean>(false);
 
   const signUpTapped = () => {
     console.log('SignUp View Navigation');
     navigation.pop();
   };
 
-  const isActiveReady = () => {
-    return username.length > 1 &&
-      email.includes('@') &&
-      password.length > 1 &&
-      passwordConfirmed.length > 1
-      ? setIsActive(true)
-      : setIsActive(false);
-  };
-
-  const onChangeName = useCallback(text => {
-    setUsername(text.trim());
-  }, []);
-
   const onChangeEmail = useCallback(text => {
     setEmail(text.trim());
+  }, []);
+
+  const onChangeName = useCallback(text => {
+    setName(text.trim());
   }, []);
 
   const onChangePassword = useCallback(text => {
     setPassword(text.trim());
   }, []);
 
-  const onChangePasswordConfirmed = useCallback(text => {
-    setPasswordConfirmed(text.trim());
-  }, []);
+  const canGoNext = email && name && password;
 
-  const onSubmit = useCallback(() => {
-    if (!username || !username.trim()) {
-      return Alert.alert('닉네임을 입력해주세요');
+  const onSubmit = useCallback(async () => {
+    if (loading) {
+      return;
     }
     if (!email || !email.trim()) {
       return Alert.alert('이메일을 입력해주세요');
     }
+    if (!name || !name.trim()) {
+      return Alert.alert('이름을 입력해주세요');
+    }
     if (!password || !password.trim()) {
       return Alert.alert('비밀번호를 입력하세요');
     }
-    if (!passwordConfirmed || !passwordConfirmed.trim()) {
-      return Alert.alert('비밀번호 재입력해주세요');
+    if (
+      !/^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/.test(
+        email,
+      )
+    ) {
+      return Alert.alert('알림', '올바른 이메일 주소가 아닙니다.');
     }
-    if (password !== passwordConfirmed) {
-      return Alert.alert('비밀번호가 동일하지 않습니다');
+    if (!/^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@^!%*#?&]).{8,50}$/.test(password)) {
+      return Alert.alert(
+        '알림',
+        '비밀번호는 영문,숫자,특수문자($@^!%*#?&)를 모두 포함하여 8자 이상 입력해야합니다.',
+      );
     }
-  }, [email, password, passwordConfirmed, username]);
+
+    try {
+      setLoading(true);
+      const response = await axios.post('/user', {
+        email,
+        name,
+        password,
+      });
+    } catch (error) {
+      //error는 unknown이기 때문에 우리가 타입을 지정을 해서 추론해야한다!
+      //따라서 이 에러가 네트워크 에러인지 문법에러인지 타입스크립트 활용 가능.
+      //네트워크 에러일 때는 아래와 같이 AxiosError로
+      const errorResponse = (error as AxiosError).response;
+      //요청에 대한 응답(response) 실패 시 수행
+      console.error('SignUp error.response : ', (error as AxiosError).response);
+      if (errorResponse) {
+        Alert.alert(errorResponse.data.message);
+      }
+    } finally {
+      //try, catch 무관하게 최종적으로 항상 수행되는 코드
+      setLoading(false);
+    }
+  }, [email, loading, name, password]);
 
   return (
     <DismissKeyboardView>
       <SafeAreaContainer>
         <Container>
-          <InputContainer>
-            <Input
-              placeholder="닉네임을 입력해주세요"
-              onChangeText={text => onChangeName(text)}
-              importantForAutofill="yes"
-              autoCompleteType="name"
-              textContentType="name"
-              keyboardType="name-phone-pad"
-              value={username}
-              returnKeyType="next"
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              ref={nameRef}
-              onSubmitEditing={() => emailRef.current?.focus()}
-              blurOnSubmit={false}
-              onKeyPress={() => isActiveReady()}
-            />
-          </InputContainer>
           <InputContainer>
             <Input
               placeholder="이메일을 입력해주세요"
@@ -161,9 +167,22 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
               clearButtonMode="while-editing"
               autoCapitalize="none"
               ref={emailRef}
-              onSubmitEditing={() => passwordRef.current?.focus()}
+              onSubmitEditing={() => nameRef.current?.focus()}
               blurOnSubmit={false}
-              onKeyPress={() => isActiveReady()}
+            />
+          </InputContainer>
+          <InputContainer>
+            <Input
+              placeholder="이름을 입력해주세요"
+              onChangeText={text => onChangeName(text)}
+              importantForAutofill="yes"
+              textContentType="name"
+              value={name}
+              returnKeyType="send"
+              clearButtonMode="while-editing"
+              autoCapitalize="none"
+              ref={nameRef}
+              onSubmitEditing={() => passwordRef.current?.focus()}
             />
           </InputContainer>
           <InputContainer>
@@ -179,34 +198,23 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
               clearButtonMode="while-editing"
               autoCapitalize="none"
               ref={passwordRef}
-              onSubmitEditing={() => passwordConfirmedRef.current?.focus()}
-              onKeyPress={() => isActiveReady()}
-            />
-          </InputContainer>
-          <InputContainer>
-            <Input
-              placeholder="비밀번호를 재입력해주세요"
-              onChangeText={text => onChangePasswordConfirmed(text)}
-              importantForAutofill="yes"
-              autoCompleteType="password"
-              textContentType="password"
-              secureTextEntry
-              value={passwordConfirmed}
-              returnKeyType="send"
-              clearButtonMode="while-editing"
-              autoCapitalize="none"
-              ref={passwordConfirmedRef}
               onSubmitEditing={onSubmit}
-              onKeyPress={() => isActiveReady()}
             />
           </InputContainer>
           <LoginButton
             style={{
-              backgroundColor: isActive === true ? 'gray' : 'lightgray',
+              backgroundColor: canGoNext ? 'gray' : 'lightgray',
             }}
-            disabled={!isActive}
+            //disabled에 loading 넣어주기
+            //사용자가 버튼을 연달아누를 시 중복가입 방지용
+            //사용자는 해커라고 생각하고 코드로 구현
+            disabled={!canGoNext || loading}
             onPress={() => signUpTapped()}>
-            <ButtonText>Login</ButtonText>
+            {loading ? (
+              <ActivityIndicator color="white" size="small" style={{}} />
+            ) : (
+              <ButtonText>Sign Up</ButtonText>
+            )}
           </LoginButton>
         </Container>
       </SafeAreaContainer>

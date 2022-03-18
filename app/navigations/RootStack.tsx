@@ -11,6 +11,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
+  //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
 
   return isLoggedIn ? (
@@ -32,17 +33,14 @@ const RootStack = () => {
       />
     </Tab.Navigator>
   ) : (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="LogIn"
-        component={LogIn}
-        options={{title: '로그인'}}
-      />
-      <Stack.Screen
-        name="SignUp"
-        component={SignUp}
-        options={{title: '회원가입'}}
-      />
+    <Stack.Navigator
+      screenOptions={{
+        headerTitle: '',
+        headerTintColor: 'black',
+        headerShadowVisible: false,
+      }}>
+      <Stack.Screen name="LogIn" component={LogIn} />
+      <Stack.Screen name="SignUp" component={SignUp} />
     </Stack.Navigator>
   );
 };

@@ -22,5 +22,4 @@ declare module 'react-redux' {
 //엄청나군..
 export default rootReducer;
 
-
 //test
