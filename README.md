@@ -1,9 +1,9 @@
 # Service
  - Auth for Login and Signup
- - Producing Map for Ordering Product
+ - Providing Map for Ordering Product
 
 # Function
- - Auth ( Async-Storage / Axios / Redux )
+ - Auth ( Async-Storage / Axios / Redux / Social Login ( Google / Apple ) )
  - Navigation ( Stack / Bottom-Tab )
  - Total Modulerization for Axios, Redux..(working on -> with Custom Hooks and react-query)
 
