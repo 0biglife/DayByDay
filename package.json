@@ -34,6 +34,7 @@
     "react-native-base64": "0.2.1",
     "react-native-config": "1.4.5",
     "react-native-device-info": "8.4.8",
+    "react-native-encrypted-storage": "4.0.2",
     "react-native-flipper": "0.138.0",
     "react-native-gesture-handler": "1.10.3",
     "react-native-image-crop-picker": "0.37.2",
