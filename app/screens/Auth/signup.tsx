@@ -128,9 +128,11 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       const response = await axios.post(`${Config.API_URL}/user`, {
         email,
         name,
-        password,
+        password, //비밀번호는 hash화(일방향 암호화) 되어서 숨겨진 채로 백으로 들어감
+        //다시 값을 받아오는 것은 양방향 암호화. 비밀번호는 일방향 암호화로 처리.
+        //암호화 반댓말은 복호화
       });
-      console.log('Succeed');
+      console.log('SignUp : Succeed');
       console.log('SignUp Response : ', response.data);
       Alert.alert('회원가입이 완료되었습니다.');
       navigation.navigate('LogIn');
@@ -148,7 +150,7 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       //try, catch 무관하게 최종적으로 항상 수행되는 코드
       setLoading(false);
     }
-  }, [email, loading, name, password]);
+  }, [email, loading, name, navigation, password]);
 
   return (
     <DismissKeyboardView>

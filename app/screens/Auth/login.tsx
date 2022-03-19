@@ -6,14 +6,15 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import jwtDecode from 'jwt-decode';
 
 //Token Control
 import {AuthParamList} from '../../navigations/Types';
 //Redux
-import {checkMultiple, PERMISSIONS} from 'react-native-permissions';
 import DismissKeyboardView from '../../components/DismissKeyboardView';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+//API Call
+import axios, {AxiosError} from 'axios';
+import Config from 'react-native-config';
 
 interface tokenType {
   aud: string;
@@ -176,16 +177,6 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     }
   };
 
-  const toLogin = () => {
-    if (isLoading) {
-      return;
-    }
-    login({
-      identifier: email,
-      password,
-    });
-  };
-
   const isActiveReady = () => {
     return email.includes('@') && password.length > 1
       ? setIsActive(true)
@@ -200,7 +191,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     setPassword(text.trim());
   }, []);
 
-  const onSubmit = useCallback(() => {
+  const onSubmit = useCallback(async () => {
     if (loading) {
       return;
     }
@@ -212,6 +203,25 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       return Alert.alert('비밀번호를 입력하세요');
     }
     //API Call
+    try {
+      setLoading(true);
+      const response = await axios.post(`${Config.API_URL}/login`, {
+        email,
+        password,
+      });
+      console.log('LogIn : Succeed');
+      console.log('LogIn Response : ', response.data);
+      Alert.alert('로그인이 완료되었습니다.');
+    } catch (error) {
+      const errorResponse = (error as AxiosError).response;
+      //요청에 대한 응답(response) 실패 시 수행
+      console.error('LogIn error.response : ', (error as AxiosError).response);
+      if (errorResponse) {
+        Alert.alert(errorResponse.data.message);
+      }
+    } finally {
+      setLoading(false);
+    }
   }, [email, loading, password]);
 
   return (
