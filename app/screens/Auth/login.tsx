@@ -12,9 +12,12 @@ import {AuthParamList} from '../../navigations/Types';
 //Redux
 import DismissKeyboardView from '../../components/DismissKeyboardView';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-//API Call
+//API + Storage
 import axios, {AxiosError} from 'axios';
 import Config from 'react-native-config';
+import {useAppDispatch} from '../../redux/store/index';
+import userSlice from '../../redux/slices/user';
+import EncrytedStorage from 'react-native-encrypted-storage';
 
 interface tokenType {
   aud: string;
@@ -118,6 +121,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
   //Logic
   const [isActive, setIsActive] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     GoogleSignin.configure({
@@ -212,6 +216,18 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       console.log('LogIn : Succeed');
       console.log('LogIn Response : ', response.data);
       Alert.alert('로그인이 완료되었습니다.');
+      dispatch(
+        userSlice.actions.setUser({
+          name: response.data.data.name,
+          email: response.data.data.email,
+          accessToken: response.data.data.accessToken,
+        }),
+      );
+      //추후, 서버쪽에서 refreshToken 자동 삭제 기능을 넣어야 보안이 철저함
+      await EncrytedStorage.setItem(
+        'refreshToken',
+        response.data.data.refreshToken,
+      );
     } catch (error) {
       const errorResponse = (error as AxiosError).response;
       //요청에 대한 응답(response) 실패 시 수행
@@ -222,7 +238,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     } finally {
       setLoading(false);
     }
-  }, [email, loading, password]);
+  }, [dispatch, email, loading, password]);
 
   return (
     <DismissKeyboardView>

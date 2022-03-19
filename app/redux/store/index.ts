@@ -15,6 +15,6 @@ const store = configureStore({
 });
 export default store;
 
-//타입 에러 방지
+//타입스크립트에서 쓰기 위한 wrapper
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();

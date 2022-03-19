@@ -1,6 +1,4 @@
 import {combineReducers} from 'redux';
-import auth from '../slices/auth';
-import authState from '../slices/authState';
 import userSlice from '../slices/user';
 
 const rootReducer = combineReducers({
