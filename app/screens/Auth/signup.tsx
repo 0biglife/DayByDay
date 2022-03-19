@@ -150,7 +150,8 @@ const SignUp: React.FC<SignUpProps> = ({navigation}) => {
       //try, catch 무관하게 최종적으로 항상 수행되는 코드
       setLoading(false);
     }
-  }, [email, loading, name, navigation, password]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [email, loading, name, password]);
 
   return (
     <DismissKeyboardView>

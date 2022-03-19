@@ -124,15 +124,15 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '21966285335-pd59r4mk54v02nd8v5k2kem3gt1th3fl.apps.googleusercontent.com',
-      iosClientId:
-        '21966285335-0r4fqc0aoe84encol860j1q7l95mnt1o.apps.googleusercontent.com',
-      offlineAccess: true,
-      forceCodeForRefreshToken: true,
-    });
-    isSignedIn();
+    // GoogleSignin.configure({
+    //   webClientId:
+    //     '21966285335-pd59r4mk54v02nd8v5k2kem3gt1th3fl.apps.googleusercontent.com',
+    //   iosClientId:
+    //     '21966285335-0r4fqc0aoe84encol860j1q7l95mnt1o.apps.googleusercontent.com',
+    //   offlineAccess: true,
+    //   forceCodeForRefreshToken: true,
+    // });
+    // isSignedIn();
   }, []);
 
   const GoogleSignIn = async () => {
@@ -231,7 +231,6 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
     } catch (error) {
       const errorResponse = (error as AxiosError).response;
       //요청에 대한 응답(response) 실패 시 수행
-      console.error('LogIn error.response : ', (error as AxiosError).response);
       if (errorResponse) {
         Alert.alert(errorResponse.data.message);
       }
