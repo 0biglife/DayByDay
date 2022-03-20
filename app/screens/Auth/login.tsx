@@ -283,7 +283,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
               backgroundColor: isActive ? 'gray' : 'lightgray',
             }}
             disabled={!isActive || loading}
-            onPress={() => onSubmit}>
+            onPress={onSubmit}>
             <ButtonText>Login</ButtonText>
           </LoginButton>
           <SignUpTextView onPress={() => navigation.navigate('SignUp')}>
