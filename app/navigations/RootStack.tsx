@@ -17,8 +17,8 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
-  //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const dispatch = useAppDispatch();
+  //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
 
   //앱 실행 시 토큰 존재하면 로그인 활성화!
@@ -51,6 +51,9 @@ const RootStack = () => {
         if ((error as AxiosError).response?.data.code === 'expired') {
           Alert.alert('알림', '다시 로그인 해주세요.');
         }
+      } finally {
+        //로그인 화면 가려주기 위해 splash-screen을 넣을건데 여기서 제거 흐름
+        // TODO : 스플래시 스크린 없애기
       }
     };
     //useEffect는 async 불가기 때문에 별개 함수로 선언하고 호출하는 방식으로 구현
