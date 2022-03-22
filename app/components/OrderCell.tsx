@@ -7,9 +7,10 @@ import orderSlice, {Order} from '../redux/slices/order';
 import {useAppDispatch} from '../redux/store';
 import {RootState} from '../redux/store/reducers';
 import {Config} from 'react-native-config';
-import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainTabParamList} from '../navigations/Types';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const Container = styled.View`
   //
@@ -86,16 +87,40 @@ const OrderCell = ({item}: {item: Order}) => {
       await axios.post(
         `${Config.API_URL}/accept`,
         {orderId: item.orderId},
-        {headers: {Authorization: `Beare ${accessToken}`}},
+        {headers: {Authorization: `Bearer ${accessToken}`}},
       );
       dispatch(orderSlice.actions.acceptOrder(item.orderId));
       navigation.navigate('Delivery');
     } catch (error) {
       const errorResponse = (error as AxiosError).response;
       //이미 누가 주문을 잡아간 상태면 백에서 400 에러코드를 보내주고 다시 reject 해준다
+      console.log('OrderCell Error : ', errorResponse?.data.message);
       if (errorResponse?.status === 400) {
         Alert.alert(errorResponse.data.message);
         dispatch(orderSlice.actions.rejectOrder(item.orderId));
+      }
+      if (errorResponse?.status === 419) {
+        //토큰 재발급
+        const refreshToken = await EncryptedStorage.getItem('refreshToken');
+        const response = await axios.post(
+          `${Config.API_URL}/refreshToken`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${refreshToken}`,
+            },
+          },
+        );
+        await axios.post(
+          `${Config.API_URL}/accept`,
+          {orderId: item.orderId},
+          {
+            headers: {
+              Authorization: `Bearer ${response.data.data.accessToken}`,
+            },
+          },
+        );
+        response.data.data.accessToken;
       }
     } finally {
       setLoading(false);

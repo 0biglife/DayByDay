@@ -88,7 +88,7 @@ function Settings() {
     <Container>
       <TextContainer>
         <Title style={{color: 'black'}}>
-          {name}님의 수익금{' '}
+          {name} 님의 수익금{' '}
           <Title style={{color: 'black', fontWeight: 'bold'}}>
             {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           </Title>
