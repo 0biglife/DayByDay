@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux';
+import orderSlice from '../slices/order';
 import userSlice from '../slices/user';
 
 const rootReducer = combineReducers({
   user: userSlice.reducer,
+  order: orderSlice.reducer,
 });
 
 //RootReducer의 반환값 타입형은 RootState type alias로 지정 가능

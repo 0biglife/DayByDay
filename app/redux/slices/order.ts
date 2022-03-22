@@ -24,7 +24,7 @@ const initialState: InitialState = {
 };
 
 const orderSlice = createSlice({
-  name: 'order',
+  name: 'orders',
   initialState,
   reducers: {
     addOrder(state, action: PayloadAction<Order>) {
