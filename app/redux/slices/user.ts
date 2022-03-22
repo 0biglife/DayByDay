@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 
 const initialState = {
   name: '',
@@ -15,9 +15,9 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.accessToken = action.payload.accessToken;
     },
-    setMoney(state, action) {
+    setMoney(state, action: PayloadAction<number>) {
       state.money = action.payload;
-    }
+    },
   },
   //extraReducer는 비동기 액션 생성시 필요
   // extraReducers: builder => {},

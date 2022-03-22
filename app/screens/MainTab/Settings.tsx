@@ -41,7 +41,22 @@ function Settings() {
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
   const dispatch = useAppDispatch();
   const name = useSelector((state: RootState) => state.user.name);
-  const money = useSelector((state: RootState) => state.user);
+  const money = useSelector((state: RootState) => state.user.money);
+
+  useEffect(() => {
+    const getMoney = async () => {
+      const response = await axios.get<{data: {data: number}}>(
+        `${Config.API_URL}/showmethemoney`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+      );
+      dispatch(userSlice.actions.setMoney(response.data.data));
+    };
+    getMoney();
+  }, [accessToken, dispatch]);
 
   const onLogout = useCallback(async () => {
     try {
@@ -71,19 +86,10 @@ function Settings() {
 
   return (
     <Container>
-      <View style={styles.money}>
-        <Text style={styles.moneyText}>
-          {name}님의 수익금{' '}
-          <Text style={{fontWeight: 'bold'}}>
-            {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          </Text>
-          원
-        </Text>
-      </View>
       <TextContainer>
         <Title style={{color: 'black'}}>
           {name}님의 수익금{' '}
-          <Title style={{fontWeight: 'bold'}}>
+          <Title style={{color: 'black', fontWeight: 'bold'}}>
             {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           </Title>
         </Title>
