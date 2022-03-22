@@ -4,6 +4,7 @@ const initialState = {
   name: '',
   email: '',
   accessToken: '',
+  money: 0,
 };
 const userSlice = createSlice({
   name: 'user',
@@ -14,6 +15,9 @@ const userSlice = createSlice({
       state.name = action.payload.name;
       state.accessToken = action.payload.accessToken;
     },
+    setMoney(state, action) {
+      state.money = action.payload;
+    }
   },
   //extraReducer는 비동기 액션 생성시 필요
   // extraReducers: builder => {},

@@ -12,6 +12,8 @@ import axios, {AxiosError} from 'axios';
 import Config from 'react-native-config';
 import userSlice from '../redux/slices/user';
 import {Alert} from 'react-native';
+import useSocket from '../hooks/useSocket';
+import orderSlice from '../redux/slices/order';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -20,6 +22,35 @@ const RootStack = () => {
   const dispatch = useAppDispatch();
   //!!연산자 : undefined checking : null이나 undefined 면 false 를 반환 !
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
+  //소켓 훅
+  const [socket, disconnect] = useSocket();
+
+  //소켓 실시간 데이터 통신
+  useEffect(() => {
+    //서버로부터 데이터 받을 때는 콜백 방식 필수
+    //useCallback => ()
+    const socketCallBack = (data: any) => {
+      console.log('RootStack Socket Callback : ', data);
+      dispatch(orderSlice.actions.addOrder(data));
+    };
+    if (socket && isLoggedIn) {
+      console.log('RootStack Socket : ', socket);
+      socket.emit('acceptOrder', 'hello'); //서버에 데이터 전송
+      socket.on('order', socketCallBack); //서버로부터 데이터 받기
+    }
+    return () => {
+      if (socket) {
+        socket.off('order', socketCallBack); //데이터 받기 중단
+      }
+    };
+  }, [dispatch, isLoggedIn, socket]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      console.log('RootStack - isLoggedIn', isLoggedIn);
+      disconnect();
+    }
+  }, [isLoggedIn, disconnect]);
 
   //앱 실행 시 토큰 존재하면 로그인 활성화!
   useEffect(() => {

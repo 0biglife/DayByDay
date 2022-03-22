@@ -12,7 +12,15 @@ import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store/reducers';
 
 const Container = styled.View`
-  //
+  justify-content: space-around;
+`;
+
+const TextContainer = styled.View`
+  background-color: lightgray;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin: 20px;
 `;
 
 const ButtonContainer = styled.TouchableOpacity`
@@ -24,7 +32,7 @@ const ButtonContainer = styled.TouchableOpacity`
   margin: 20px;
 `;
 
-const ButtonText = styled.Text`
+const Title = styled.Text`
   font-size: 16px;
   color: white;
 `;
@@ -32,6 +40,8 @@ const ButtonText = styled.Text`
 function Settings() {
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
   const dispatch = useAppDispatch();
+  const name = useSelector((state: RootState) => state.user.name);
+  const money = useSelector((state: RootState) => state.user);
 
   const onLogout = useCallback(async () => {
     try {
@@ -61,8 +71,25 @@ function Settings() {
 
   return (
     <Container>
+      <View style={styles.money}>
+        <Text style={styles.moneyText}>
+          {name}님의 수익금{' '}
+          <Text style={{fontWeight: 'bold'}}>
+            {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          </Text>
+          원
+        </Text>
+      </View>
+      <TextContainer>
+        <Title style={{color: 'black'}}>
+          {name}님의 수익금{' '}
+          <Title style={{fontWeight: 'bold'}}>
+            {money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          </Title>
+        </Title>
+      </TextContainer>
       <ButtonContainer onPress={onLogout}>
-        <ButtonText>Log Out</ButtonText>
+        <Title>Log Out</Title>
       </ButtonContainer>
     </Container>
   );

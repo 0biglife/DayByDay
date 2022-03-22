@@ -15,7 +15,7 @@ const useSocket = (): [typeof socket, () => void] => {
     //socket이 없을 때만 연결
     socket = io(Config.API_URL, {
       transports: ['websocket'],
-      path: '/socket-io', //백에서 넘겨주는 주소
+      // path: '/socket-io', //백에서 넘겨주는 주소
     });
   }
   return [socket, disconnect];
