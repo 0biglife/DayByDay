@@ -1,4 +1,4 @@
-package com.viewty;
+package com.daybyday;
 
 import android.app.Application;
 import android.content.Context;
