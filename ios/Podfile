@@ -3,7 +3,7 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '11.0'
 
-target 'viewty' do
+target 'daybyday' do
   config = use_native_modules!
 
   use_react_native!(
@@ -27,7 +27,7 @@ target 'viewty' do
   # pod 'Firebase/Auth'
   # pod 'Firebase/Firestore'
 
-  target 'viewtyTests' do
+  target 'daybydayTests' do
     inherit! :complete
     # Pods for testing
   end

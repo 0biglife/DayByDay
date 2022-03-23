@@ -44,7 +44,7 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
   #endif
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge
-  moduleName:@"viewty"
+  moduleName:@"daybyday"
   initialProperties:nil];
 
   if (@available(iOS 13.0, *)) {
