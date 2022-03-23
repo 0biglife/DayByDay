@@ -552,7 +552,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.daybyday;
+				PRODUCT_BUNDLE_IDENTIFIER = com.daybyday;
 				PRODUCT_NAME = daybyday;
 				SWIFT_OBJC_BRIDGING_HEADER = "daybyday-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -579,7 +579,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = org.daybyday;
+				PRODUCT_BUNDLE_IDENTIFIER = com.daybyday;
 				PRODUCT_NAME = daybyday;
 				SWIFT_OBJC_BRIDGING_HEADER = "daybyday-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;

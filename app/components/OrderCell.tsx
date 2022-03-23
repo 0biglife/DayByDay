@@ -10,7 +10,7 @@ import {Config} from 'react-native-config';
 import {useNavigation} from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {MainTabParamList} from '../navigations/Types';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import NaverMapView, {Marker, Path} from 'react-native-nmap';
 
 const Container = styled.View`
   //
@@ -40,11 +40,15 @@ const DetailView = styled.View`
   background-color: lightgray;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  padding: 16px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 4px;
+  padding-right: 4px;
   margin-left: 6px;
   margin-right: 6px;
+`;
+
+const MapView = styled.View`
+  height: 200px;
+  background-color: lightblue;
 `;
 
 const ButtonWrapper = styled.View`
@@ -69,7 +73,11 @@ const ButtonText = styled.Text`
   font-weight: 500;
 `;
 
-const OrderCell = ({item}: {item: Order}) => {
+interface OrderCellProps {
+  item: Order;
+}
+
+const OrderCell = ({item}: OrderCellProps) => {
   //상단 컴포넌트에서 navigation을 인자로 줄 수 있지만 그런 props-dealing은 지양하는게 성능상 좋음(추후 자식 컴포넌트가 생길 것을 고려하여)
   const navigation =
     useNavigation<NativeStackNavigationProp<MainTabParamList>>();
@@ -77,6 +85,7 @@ const OrderCell = ({item}: {item: Order}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [detail, setDetail] = useState<boolean>(false);
   const accessToken = useSelector((state: RootState) => state.user.accessToken);
+  const {start, end} = item;
   const toggleDetail = useCallback(() => {
     setDetail(prev => !prev);
   }, []);
@@ -127,9 +136,40 @@ const OrderCell = ({item}: {item: Order}) => {
       </CellContainer>
       {detail ? (
         <DetailView>
-          <View>
-            <Title>데이터 공간</Title>
-          </View>
+          <MapView>
+            <NaverMapView
+              style={{width: '100%', height: '100%'}}
+              zoomControl={false}
+              center={{
+                zoom: 10,
+                // tilt: 50, //지도 위에서 볼 떄의 기울기
+                latitude: (start.latitude + end.latitude) / 2,
+                longitude: (start.longitude + end.longitude) / 2,
+              }}>
+              <Marker //출발지점 마커
+                coordinate={{
+                  latitude: start.latitude,
+                  longitude: start.longitude,
+                }}
+                pinColor="blue"
+              />
+              <Path //출발지점 ~ 도착지점 이어주는 경로
+                coordinates={[
+                  {
+                    latitude: start.latitude,
+                    longitude: start.longitude,
+                  },
+                  {
+                    latitude: end.latitude,
+                    longitude: end.longitude,
+                  },
+                ]}
+              />
+              <Marker //도착지점 마커
+                coordinate={{latitude: end.latitude, longitude: end.longitude}}
+              />
+            </NaverMapView>
+          </MapView>
           <ButtonWrapper>
             <TouchButton onPress={onAccept} disabled={loading}>
               <ButtonText>Accept</ButtonText>

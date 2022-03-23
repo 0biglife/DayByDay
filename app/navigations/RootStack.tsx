@@ -31,7 +31,6 @@ const RootStack = () => {
     //두 번째 인자 : 에러났을 때 실행 함수
     axios.interceptors.response.use(
       response => {
-        console.log('RootStack - Axios Interceptor : ', response);
         return response;
       },
       //여기 에러났을 때 실햄함수 부분에서 refreshToken 적용 !

@@ -4,11 +4,11 @@ export interface Order {
   orderId: string;
   start: {
     latitude: number;
-    longtitude: number;
+    longitude: number;
   };
   end: {
     latitude: number;
-    longtitude: number;
+    longitude: number;
   };
   price: number;
 }
