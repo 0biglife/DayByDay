@@ -199,6 +199,11 @@ android {
 
         }
     }
+
+    // react-native-nmap 으로 인한 메모리 부족 해결 코드
+    dexOptions{
+        javaMaxHeapSize "4g"
+    }
 }
 
 dependencies {
@@ -210,6 +215,9 @@ dependencies {
     // implementation 'com.google.android.gms:play-services-auth:20.0.0'
     // implementation "androidx.browser:browser:1.2.0"
 
+    //react-native-nmap
+    implementation 'com.naver.maps:map-sdk:3.14.0'
+    
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
 

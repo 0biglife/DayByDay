@@ -19,7 +19,8 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:largeHeap="true">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -38,5 +39,9 @@
           <data android:scheme="앱 스킴 값 EX. example" />
         </intent-filter>
       </activity>
+        <!-- react-native-nmap -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID" 
+            android:value="2uviq89k2c" />
     </application>
 </manifest>

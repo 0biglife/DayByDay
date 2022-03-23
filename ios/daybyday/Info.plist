@@ -3,8 +3,8 @@
 <plist version="1.0">
 <dict>
   <!-- react-native-nmap for iOS Setting -->
-<!--  <key>NMFClientId</key>-->
-<!--  <string>2uviq89k2c</string>-->
+  <key>NMFClientId</key>
+  <string>2uviq89k2c</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>

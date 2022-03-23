@@ -143,7 +143,7 @@ const LogIn: React.FC<LogInProps> = ({navigation}) => {
       //google auth
       console.log('due_______', userInfo);
       console.log('Google Access Token : ', accessToken);
-      setUser(userInfo);
+      // setUser(userInfo);
     } catch (error) {
       console.log('MESSAGE', error.message);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {

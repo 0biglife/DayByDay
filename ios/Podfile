@@ -26,7 +26,11 @@ target 'daybyday' do
   # pod 'Firebase/Analytics'
   # pod 'Firebase/Auth'
   # pod 'Firebase/Firestore'
-
+  
+  # react-native-nmap
+  pod 'NMapsMap'
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  
   target 'daybydayTests' do
     inherit! :complete
     # Pods for testing
