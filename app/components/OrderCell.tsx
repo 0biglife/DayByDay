@@ -87,9 +87,10 @@ const OrderCell = ({item}: {item: Order}) => {
       await axios.post(
         `${Config.API_URL}/accept`,
         {orderId: item.orderId},
-        {headers: {Authorization: `Bearer ${accessToken}`}},
+        {headers: {authorization: `Bearer ${accessToken}`}},
       );
       dispatch(orderSlice.actions.acceptOrder(item.orderId));
+      setLoading(false);
       navigation.navigate('Delivery');
     } catch (error) {
       const errorResponse = (error as AxiosError).response;
@@ -99,32 +100,8 @@ const OrderCell = ({item}: {item: Order}) => {
         Alert.alert(errorResponse.data.message);
         dispatch(orderSlice.actions.rejectOrder(item.orderId));
       }
-      if (errorResponse?.status === 419) {
-        //토큰 재발급
-        const refreshToken = await EncryptedStorage.getItem('refreshToken');
-        const response = await axios.post(
-          `${Config.API_URL}/refreshToken`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${refreshToken}`,
-            },
-          },
-        );
-        await axios.post(
-          `${Config.API_URL}/accept`,
-          {orderId: item.orderId},
-          {
-            headers: {
-              Authorization: `Bearer ${response.data.data.accessToken}`,
-            },
-          },
-        );
-        response.data.data.accessToken;
-      }
-    } finally {
       setLoading(false);
-    }
+    } //navigate 을 쓸 때에는, finally 쓰지 말 것!
     dispatch(orderSlice.actions.acceptOrder(item.orderId));
   }, [accessToken, dispatch, item.orderId, navigation]);
 

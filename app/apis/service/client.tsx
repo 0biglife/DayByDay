@@ -12,10 +12,10 @@ export default client;
 
 export const applyToken = (jwt: string) => {
   console.log('Apply Token by Client : ', jwt);
-  client.defaults.headers.common.Authorization = `Bearer ${jwt}`;
+  client.defaults.headers.common.authorization = `Bearer ${jwt}`;
 };
 
 export const clearToken = () => {
   console.log('Delete Token by Client');
-  client.defaults.headers.common.Authorization = '';
+  client.defaults.headers.common.authorization = '';
 };

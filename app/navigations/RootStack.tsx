@@ -25,6 +25,45 @@ const RootStack = () => {
   //소켓 훅
   const [socket, disconnect] = useSocket();
 
+  // axios.interceptor로 refreshToken 적용
+  useEffect(() => {
+    //첫 번째 인자 : 성공했을 때 실행 함수
+    //두 번째 인자 : 에러났을 때 실행 함수
+    axios.interceptors.response.use(
+      response => {
+        console.log('RootStack - Axios Interceptor : ', response);
+        return response;
+      },
+      //여기 에러났을 때 실햄함수 부분에서 refreshToken 적용 !
+      async error => {
+        const {
+          config, //원래 요청
+          response: {status},
+        } = error;
+        if (status === 419) {
+          //status가 419면서 에러 코드가 '만료'라면
+          if (error.response.data.code === 'expired') {
+            const originalRequest = config;
+            const refreshToken = await EncryptedStorage.getItem('refreshToken');
+            const {data} = await axios.post(
+              `${Config.API_URL}/refreshToken`,
+              {},
+              {
+                headers: {
+                  authorization: `Bearer ${refreshToken}`,
+                },
+              },
+            );
+            dispatch(userSlice.actions.setAccessToken(data.data.accessToken));
+            originalRequest.headers.authorization = `Bearer ${data.data.accessToken}`;
+            return axios(originalRequest); //예전 요청 다시 보내는 방식
+          }
+        }
+        return Promise.reject(error); //419 아닐 때 처리
+      },
+    );
+  }, []);
+
   //소켓 실시간 데이터 통신
   useEffect(() => {
     //서버로부터 데이터 받을 때는 콜백 방식 필수
@@ -66,7 +105,7 @@ const RootStack = () => {
           {},
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              authorization: `Bearer ${token}`,
             },
           },
         );

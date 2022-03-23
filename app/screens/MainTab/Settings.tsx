@@ -45,11 +45,11 @@ function Settings() {
 
   useEffect(() => {
     const getMoney = async () => {
-      const response = await axios.get<{data: {data: number}}>(
+      const response = await axios.get<{data: number}>(
         `${Config.API_URL}/showmethemoney`,
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            authorization: `Bearer ${accessToken}`,
           },
         },
       );
@@ -65,7 +65,7 @@ function Settings() {
         {},
         {
           headers: {
-            Authorization: `Bearer ${accessToken}`,
+            authorization: `Bearer ${accessToken}`,
           },
         },
       );
