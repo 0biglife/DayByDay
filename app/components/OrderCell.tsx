@@ -154,6 +154,8 @@ const OrderCell = ({item}: OrderCellProps) => {
                 pinColor="blue"
               />
               <Path //출발지점 ~ 도착지점 이어주는 경로
+                color="gray"
+                width={2}
                 coordinates={[
                   {
                     latitude: start.latitude,

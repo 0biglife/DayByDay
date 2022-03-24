@@ -14,6 +14,7 @@ import userSlice from '../redux/slices/user';
 import {Alert} from 'react-native';
 import useSocket from '../hooks/useSocket';
 import orderSlice from '../redux/slices/order';
+import usePermissions from '../hooks/usePermissions';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -24,6 +25,8 @@ const RootStack = () => {
   const isLoggedIn = useSelector((state: RootState) => !!state.user.email);
   //소켓 훅
   const [socket, disconnect] = useSocket();
+
+  usePermissions();
 
   // axios.interceptor로 refreshToken 적용
   useEffect(() => {
