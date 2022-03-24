@@ -80,7 +80,7 @@ const usePermissions = () => {
           }
         })
         .catch(console.error);
-    } else if(Platform.OS === 'ios') {
+    } else if (Platform.OS === 'ios') {
       check(PERMISSIONS.IOS.CAMERA)
         .then(result => {
           if (
