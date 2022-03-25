@@ -37,11 +37,19 @@ const ButtonWrapper = styled.View`
   align-items: center;
 `;
 
+const ImageWrapper = styled.View`
+  width: 100%;
+  height: 60%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  background-color: lightgray;
+`;
+
 const ImageView = styled.Image`
   flex: 1;
   width: 100%;
-  height: 100%;
-  margin-bottom: 20px;
+  height: 60%;
+  background-color: lightgray;
 `;
 
 const ButtonView = styled.TouchableOpacity`
@@ -72,12 +80,10 @@ const Complete = () => {
     console.log('response width : ', response.width);
     console.log('response height : ', response.height);
     console.log('response exif : ', response.exif);
-    /*
-    file:///Users/0ds/Library/Developer/CoreSimulator/Devices/1319CE62-4439-4396-BE4F-46EFA34D2DC2/data/Containers/Data/Application/EEB5B4DA-777F-43B5-BEEE-89BBD2AD9DB0/Library/Caches/8E6684F4-F19B-40B8-BBF0-EDCF36D310CA.jpg 8E6684F4-F19B-40B8-BBF0-EDCF36D310CA.jpg
-    */
     setPreview({
       uri: `data:${response.mime};base64,${response.data}`,
     });
+    //
     const orientation = (response.exif as any)?.Orientation;
     console.log('orientation : ', orientation);
     return ImageResizer.createResizedImage(
@@ -86,7 +92,8 @@ const Complete = () => {
       600,
       response.mime.includes('jpeg') ? 'JPEG' : 'PNG',
       100,
-      0,
+      0, //이 자리는 rotation 값(orientation을 이용해 추후 코딩)
+      // orientation === 3 ? -90 ~ // 3일 때 90도 돌려라 라는 방식 등등
     ).then(r => {
       console.log(r.uri, r.name);
 
@@ -155,9 +162,11 @@ const Complete = () => {
         <Text>주문번호: {orderId}</Text>
       </HeaderContainer>
       <BodyContainer>
-        {preview && (
-          <ImageView style={{resizeMode: 'contain'}} source={preview} />
-        )}
+        <ImageWrapper>
+          {preview && (
+            <ImageView style={{resizeMode: 'contain'}} source={preview} />
+          )}
+        </ImageWrapper>
         <ButtonWrapper>
           <ButtonView onPress={onTakePhoto}>
             <ButtonText>이미지 촬영</ButtonText>
