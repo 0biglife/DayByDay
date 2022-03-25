@@ -142,7 +142,7 @@ const RootStack = () => {
       <Tab.Screen
         name="Delivery"
         component={Delivery}
-        options={{title: '업무'}}
+        options={{title: '배달 완료'}}
       />
       <Tab.Screen
         name="Settings"
