@@ -26,7 +26,8 @@ target 'daybyday' do
   pod 'Permission-LocationAlways', :path => "#{permissions_path}/LocationAlways"
   pod 'Permission-LocationWhenInUse', :path => "#{permissions_path}/LocationWhenInUse"
 
-  # pod 'Firebase/Analytics'
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Messaging'
   # pod 'Firebase/Auth'
   # pod 'Firebase/Firestore'
   

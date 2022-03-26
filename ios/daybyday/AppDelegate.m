@@ -16,6 +16,11 @@
 #import <SKIOSNetworkPlugin/SKIOSNetworkAdapter.h>
 #import <FlipperKitReactPlugin/FlipperKitReactPlugin.h>
 
+#import <Firebase.h> //Firebase Setting
+//react-native-push-notification
+#import <UserNotifications/UserNotifications.h>
+#import <RNCPushNotificationIOS.h>
+
 #import "RNSplashScreen.h" // react-native-splash-screen
 
 static void InitializeFlipper(UIApplication *application) {
@@ -29,7 +34,28 @@ static void InitializeFlipper(UIApplication *application) {
 }
 #endif
 @implementation AppDelegate
+//react-native-push-notification/ios
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+ [RNCPushNotificationIOS didRegisterForRemoteNotificationsWithDeviceToken:deviceToken];
+}
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+  [RNCPushNotificationIOS didReceiveRemoteNotification:userInfo fetchCompletionHandler:completionHandler];
+}
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
+{
+ [RNCPushNotificationIOS didFailToRegisterForRemoteNotificationsWithError:error];
+}
+- (void)userNotificationCenter:(UNUserNotificationCenter *)center
+didReceiveNotificationResponse:(UNNotificationResponse *)response
+         withCompletionHandler:(void (^)(void))completionHandler
+{
+  [RNCPushNotificationIOS didReceiveNotificationResponse:response];
+}
 
+//하단 : default
 - (BOOL)application:(UIApplication *)application 
 didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -37,6 +63,10 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
     InitializeFlipper(application);
   #endif
   
+  if ([FIRApp defaultApp] == nil){
+    [FIRApp configure];
+  }
+
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:launchOptions];
   
   #if RCT_DEV
@@ -59,7 +89,19 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
   [RNSplashScreen show]; //react-natvie-splash-screen
+
+  //react-native-push-notification/ios
+  UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+  center.delegate = self;
+
   return YES;
+}
+
+//react-native-push-notification/ios
+//Called when a notification is delivered to a foreground app.
+-(void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions options))completionHandler
+{
+  completionHandler(UNNotificationPresentationOptionSound | UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge);
 }
 
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge
@@ -72,3 +114,6 @@ didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 }
 
 @end
+
+// placenow.inc@gmail.com
+// 
